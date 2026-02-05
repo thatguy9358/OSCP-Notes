@@ -1,0 +1,145 @@
+{
+  "main": {
+    "id": "9b727460806a4e9e",
+    "type": "split",
+    "children": [
+      {
+        "id": "22fa25550b829941",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "Attacks.md",
+            "mode": "source",
+            "source": false
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "574d8bd0f024ab8a",
+    "type": "split",
+    "children": [
+      {
+        "id": "c2994b24bab04963",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "20de8696c34a5576",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "b05f8ad83ee70cdb",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "nikto",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "a0e8413b97f870d4",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 355.5
+  },
+  "right": {
+    "id": "b2671af5dada33d4",
+    "type": "split",
+    "children": [
+      {
+        "id": "b8813ee56dd48e1e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "49e42342c5dfb61f",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Attacks.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "73acf3591a80c9a5",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Attacks.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "49b4ad369b8da283",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "1332b0341704713a",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Attacks.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "22fa25550b829941",
+  "lastOpenFiles": [
+    "Web Pen Notes.md",
+    "Linux Priv Esc.md",
+    "Attacks.md",
+    "python notes.md",
+    "Ports and services.md",
+    "Recon.md",
+    "Exploitation.md",
+    "Reverse Shells.md",
+    "Pasted image 20221002162759.png",
+    "Windows Commands.md"
+  ]
+}

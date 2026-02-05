@@ -262,6 +262,7 @@
   },
   "active": "1b751b8b35da638b",
   "lastOpenFiles": [
+    "_config.yml",
     "Windows Commands.md",
     "Windows Priv Esc.md",
     "SQL Injection Attacks.md",
@@ -297,7 +298,6 @@
     "website/img/heal/Screenshot 2025-06-01 135848.png",
     "website/img/heal/consul_searchsploit.png",
     "Attacks.md",
-    "Password attacks.md",
     "website/img/puppy",
     "website/img/New folder",
     "website/img/heal",

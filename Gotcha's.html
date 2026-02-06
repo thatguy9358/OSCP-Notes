@@ -20,12 +20,12 @@
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="assets/logo2.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Gotcha's - My site</title>
+        <title>Gotcha's - Charlie's OSCP Notes</title>
       
     
     
@@ -85,7 +85,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="My site" class="md-header__button md-logo" aria-label="My site" data-md-component="logo">
+    <a href="index.html" title="Charlie&#39;s OSCP Notes" class="md-header__button md-logo" aria-label="Charlie's OSCP Notes" data-md-component="logo">
       
   <img src="assets/logo2.png" alt="logo">
 
@@ -98,7 +98,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            My site
+            Charlie's OSCP Notes
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -142,12 +142,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="My site" class="md-nav__button md-logo" aria-label="My site" data-md-component="logo">
+    <a href="index.html" title="Charlie&#39;s OSCP Notes" class="md-nav__button md-logo" aria-label="Charlie's OSCP Notes" data-md-component="logo">
       
   <img src="assets/logo2.png" alt="logo">
 
     </a>
-    My site
+    Charlie's OSCP Notes
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -789,19 +789,19 @@
 
   <h1>Gotcha's</h1>
 
-<div><p>k==If searchsploit exploits aren't working search online for other ones== --&gt; search all exploits to begin with and pick the best sounding one</p>
-<p>For webshell to interactive shell make sure we try all possible avenues --&gt; ==common ones may not work, but others might, so keep trying==</p>
+<div><p><mark>If searchsploit exploits aren't working search online for other ones</mark> --&gt; search all exploits to begin with and pick the best sounding one</p>
+<p>For webshell to interactive shell make sure we try all possible avenues --&gt; <mark>common ones may not work, but others might, so keep trying</mark></p>
 <p>GTFO bins may not have every way to exploit binaries for cron jobs --&gt; might need to do more research on internet if we see a potentially vulnerable cron job</p>
 <p>On web pages google the http-title name + "exploit" even if it looks like a custom page</p>
 <p>might have to go multiple layers deep with gobuster findings, even on pages that initially don't return results, but exist</p>
 <p>Try tunning reverse shells back to ports we think should be open like 443 --&gt; especially if shells that should work aren't connecting back</p>
 <p>run UDP scans with nmap</p>
 <p>if shells aren't executing, but they have been pulled onto remote host try a different known port. If not you might need to try a different path to store them</p>
-<p>==crackmapexec has the ability to execute commands/download/upload files on target ips== --&gt; this is helpful when we are trying to retreive files from internal machines. It avoids the need to open another tunnel for data transfer back to kali
+<p><mark>crackmapexec has the ability to execute commands/download/upload files on target ips</mark> --&gt; this is helpful when we are trying to retreive files from internal machines. It avoids the need to open another tunnel for data transfer back to kali
     ex: proxychains crackmapexec mssql 10.10.103.147 -u 'sql_svc' -p 'PasswordHere' --get-file "C:\windows.old\windows\system32\SYSTEM" SYSTEM.</p>
 <p>local creds will not authenticate using crackmap exec unless they are reused by a domain user. If we find local account creds on one domain computer they may be valid for a local account on another computer. We can try using them with the exploit tool instead of crackmapexec</p>
 <p>we can see if searchsploit contains exploits to create malicious filetypes like ODT</p>
-<p>==If one exploit does not work, we can look for more==</p>
+<p><mark>If one exploit does not work, we can look for more</mark></p>
 <p>enum4linux works on both windows and linux</p>
 <p>we can brute force uplaoded file names if they follow a convention</p>
 <p>if full names are present on a website/service we can try to make usernames to as-rep roast
@@ -858,7 +858,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["header.autohide"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["header.autohide", "navigation.tracking", "content.code.copy", "content.code.select"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="assets/javascripts/bundle.79ae519e.min.js"></script>

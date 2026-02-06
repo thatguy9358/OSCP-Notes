@@ -18,12 +18,12 @@
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="assets/logo2.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Python Notes - My site</title>
+        <title>Python Notes - Charlie's OSCP Notes</title>
       
     
     
@@ -88,7 +88,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="My site" class="md-header__button md-logo" aria-label="My site" data-md-component="logo">
+    <a href="index.html" title="Charlie&#39;s OSCP Notes" class="md-header__button md-logo" aria-label="Charlie's OSCP Notes" data-md-component="logo">
       
   <img src="assets/logo2.png" alt="logo">
 
@@ -101,7 +101,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            My site
+            Charlie's OSCP Notes
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -145,12 +145,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="My site" class="md-nav__button md-logo" aria-label="My site" data-md-component="logo">
+    <a href="index.html" title="Charlie&#39;s OSCP Notes" class="md-nav__button md-logo" aria-label="Charlie's OSCP Notes" data-md-component="logo">
       
   <img src="assets/logo2.png" alt="logo">
 
     </a>
-    My site
+    Charlie's OSCP Notes
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -855,7 +855,7 @@ Path traversla attack: allowing users to pass in a path to a file makes it vulne
             with open(path, 'rb') as f:<br>
             data = bytearray(f.read())<br>
         return data
-    ==in this code the user can supply the path to any file on the system. Could recover /etc/passwd with the command get_video('etc/passwd')==
+    <mark>in this code the user can supply the path to any file on the system. Could recover /etc/passwd with the command get_video('etc/passwd')</mark>
     <em>Fix:</em> build the path on the server side instead of trusting user input. Use function call to find correct path of video</p>
 <p>OS Command Injection: Using unsantiized input value as a parameter in an OS command call might allow an attacker to inject malicious OS commands
     example:
@@ -865,7 +865,7 @@ Path traversla attack: allowing users to pass in a path to a file makes it vulne
             e = ValueError('File %s could not be loaded.' % client_yaml)<br>
             logger.error('%s' % e)<br>
             raise e
-    ==In this code the os level call is made to open the file using input sent by the user==
+    <mark>In this code the os level call is made to open the file using input sent by the user</mark>
     <em>Fix</em>: Use lagunage libraries instead of OS calls when applicable. In this case use "open" instead of 'Cat'
     another example:
     try:<br>
@@ -878,7 +878,7 @@ Path traversla attack: allowing users to pass in a path to a file makes it vulne
             raise e<br>
             # Insert Providers JSON list<br>
         self.insert(providers)
-        ==In this code it uses the OS level commands to download a json file. An attacker could replace the json_url value with a malicious expression (eg. rm -fr /) to be executed==
+        <mark>In this code it uses the OS level commands to download a json file. An attacker could replace the json_url value with a malicious expression (eg. rm -fr /) to be executed</mark>
         <em>Fix:</em> In order to mitigate, OS command injection attacks the program must not execute inputs as OS commands from untrusted sources to read files. For this example replpace wget with requests.get()
     How to identify:
         - subprocess module
@@ -956,7 +956,7 @@ SELECT * FROM &lt;table name&gt; to get info
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["header.autohide"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["header.autohide", "navigation.tracking", "content.code.copy", "content.code.select"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="assets/javascripts/bundle.79ae519e.min.js"></script>

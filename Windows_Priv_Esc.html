@@ -20,12 +20,12 @@
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="assets/logo2.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Windows Privilege Escalation - My site</title>
+        <title>Windows Privilege Escalation - Charlie's OSCP Notes</title>
       
     
     
@@ -90,7 +90,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="My site" class="md-header__button md-logo" aria-label="My site" data-md-component="logo">
+    <a href="index.html" title="Charlie&#39;s OSCP Notes" class="md-header__button md-logo" aria-label="Charlie's OSCP Notes" data-md-component="logo">
       
   <img src="assets/logo2.png" alt="logo">
 
@@ -103,7 +103,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            My site
+            Charlie's OSCP Notes
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -147,12 +147,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="My site" class="md-nav__button md-logo" aria-label="My site" data-md-component="logo">
+    <a href="index.html" title="Charlie&#39;s OSCP Notes" class="md-nav__button md-logo" aria-label="Charlie's OSCP Notes" data-md-component="logo">
       
   <img src="assets/logo2.png" alt="logo">
 
     </a>
-    My site
+    Charlie's OSCP Notes
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -2021,9 +2021,9 @@ We can also search for plaintext documents under a users home directory</p>
 <pre><code class="language-Powershell">Get-ChildItem -Path C:\Users\dave\ -Include *.txt,*.pdf,*.xls,*.xlsx,*.doc,*.docx -File -Recurse -ErrorAction SilentlyContinue
 </code></pre>
 <p>If we recover other users credentials we should test them. If they are successful, make sure to go back and repeat the "gathering sensitive info" steps because permissions change.</p>
-<p>==If we recover valid credentials we can use the Runas command to run programs as different users only if we have a GUI. 
+<p><mark>If we recover valid credentials we can use the Runas command to run programs as different users only if we have a GUI. 
 If th user has Log on as batch job access, we can schedule a task or program as them
-If the user has ActiveSession, we can use PsExec from Sysinternals==</p>
+If the user has ActiveSession, we can use PsExec from Sysinternals</mark></p>
 <pre><code class="language-Powershell">runas /user:backupadmin cmd
 </code></pre>
 <p>Additioanlly to elevate to an admin command prompt we can use</p>
@@ -2134,7 +2134,7 @@ use as last resort
 Windows exploit suggester takes output of sysinfo commnand to find exploits
 Precompiled Kernel exploits at SecWiki/windows-kernel-exploits github
 Watson another tool option
-==HTB Academy has a great table==</p>
+<mark>HTB Academy has a great table</mark></p>
 <h2 id="service-exploits">Service exploits</h2>
 <p>Services that run with system privilege and are misconfigured are exploitable
 some useful commands for running services
@@ -2201,7 +2201,7 @@ C:\Program Files\My Program\My service\service.exe
 <p>We can use the command below to observe service paths with spaces</p>
 <pre><code class="language-cmd">wmic service get name,pathname |  findstr /i /v "C:\Windows\\" | findstr /i /v """
 </code></pre>
-<p>Once a potential Service is found, ==Make sure we can start and stop the service and check permission on the potential folder==
+<p>Once a potential Service is found, <mark>Make sure we can start and stop the service and check permission on the potential folder</mark>
 <code>icacls &lt;folder&gt;</code> can be used to check permission</p>
 <h3 id="weak-registry-permissions">Weak registry Permissions</h3>
 <p>If ACLS are misconfigured it may be possible to modify a service's configuration even if we can't modify the service directly
@@ -2337,7 +2337,7 @@ find writable program\directory --&gt; just need to overwrite file and restart c
 might need to have admin logged in last for this to work</p>
 <h3 id="msi-files">MSI files</h3>
 <p>msi files can run as admin, but can be executed by the user --&gt; if we can generate malicious msi file we can get  elevate privileges
-==need AlwaysInstalledElevated registry set in two spots for this to work==
+<mark>need AlwaysInstalledElevated registry set in two spots for this to work</mark>
 - HKLM\SOFTWARE\Policies\Microsft\Windows\Installer --&gt; allows MSI files to run on system
 - HKCU\Software\Policies\Microsoft\windows\Installer --&gt; allows user to run msi files
 Just need to copy over malicious msi file and execute it</p>
@@ -2374,7 +2374,7 @@ if files are found copy them back to Kali
 make sure we have latest version of <strong>pwdump</strong> too as part of the cred-dump7 suite or similar
 first part is LM hash, second part is NTLM hash
     hashes that start with 381c are either empty password or account is disables
-==Something about SAM can be recovered with "reg" command. Need to investigate use and rperequisites==
+<mark>Something about SAM can be recovered with "reg" command. Need to investigate use and rperequisites</mark>
 I think being a service accoutn is a sufficent pre req
 SAM hashes can also be recovered using the commands </p>
 <pre><code class="language-cmd">reg save hklm\system system
@@ -2392,7 +2392,7 @@ we can pass the hash to open a new terminal</p>
 <pre><code class="language-cmd">pth-winexe -U 'user%LM:NTLM' //&lt;ip&gt; cmd.exe
 </code></pre>
 <p>note: we need to supply both LM and NTLM hashes in the password field
-==Refer to Password Attacks for more info on cracking and passing NTLM==
+<mark>Refer to Password Attacks for more info on cracking and passing NTLM</mark>
 potentially useful tools:
 impacket-psexec
 impacket-wmiexec
@@ -2536,7 +2536,7 @@ we can search windows logs for credentials</p>
 <p>run the dnscmd to set the path for the dll</p>
 <pre><code class="language-cmd">dnscmd.exe /config /serverlevelplugindll C:\Users\netadm\Desktop\adduser.dll
 </code></pre>
-<p>==Must specify full path of the dll==
+<p><mark>Must specify full path of the dll</mark>
 need to restart dns server/service for attack to execute
 check permision for dns restart</p>
 <pre><code class="language-cmd-session">sc.exe sdshow DNS
@@ -2598,7 +2598,7 @@ check os version</p>
     Invoke-Allchecks
     Output:
     will output various misconfigured services
-    ==Only llooks for a subset of misconfigs== run other tools too</p>
+    <mark>Only llooks for a subset of misconfigs</mark> run other tools too</p>
 <p>winPEAS
     to get colors: REG ADD HKCU\Console /v VirtualTerminalLevel /t REG_DWORD /d 1
     red = good for hacker
@@ -2707,7 +2707,7 @@ Seatbelt
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["header.autohide"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["header.autohide", "navigation.tracking", "content.code.copy", "content.code.select"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="assets/javascripts/bundle.79ae519e.min.js"></script>

@@ -1,0 +1,1626 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://thatguy9358.github.io/OSCP-Notes/Information_Gathering/">
+      
+      
+        <link rel="prev" href="../Gotcha%27s/">
+      
+      
+        <link rel="next" href="../Linux_Priv_Esc/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Information Gathering - My site</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#passive-information-gathering" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="My site" class="md-header__button md-logo" aria-label="My site" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My site
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Information Gathering
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="My site" class="md-nav__button md-logo" aria-label="My site" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    My site
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Welcome to MkDocs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Active_Directory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Offsec Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Attacks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attacks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Client_Side_Attacks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Target Recon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Enumeration_Checklist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web Applications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Exploitation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exploitation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Gotcha%27s/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gotcha's
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Information Gathering
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Information Gathering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#passive-information-gathering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passive Information Gathering
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Passive Information Gathering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#whois-enumeration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        whois enumeration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#google-hacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Google Hacking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#netcraft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Netcraft
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-source-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open Source Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shodan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shodan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#active-information-gathering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Active Information Gathering
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Active Information Gathering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dns-enumeration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS Enumeration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DNS Enumeration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcpudp-port-scanning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TCP/UDP Port Scanning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port-scanning-with-nmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Port scanning with NMAP
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Port scanning with NMAP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#living-off-the-land" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Living off the land
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smb-enumeration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SMB Enumeration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SMB Enumeration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#from-windows-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From Windows Client
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smtp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SMTP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#snmp-enumeration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SNMP Enumeration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linux_Priv_Esc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Priv Esc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Linux_commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Locating_and_fixing_public_exploits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Locating and fixing public exploits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Metasploit_Framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting familiar with metasploit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Note_taking_and_Report_writing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Note taking and Report writing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Password_attacks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attacking Network Service Logins
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Playbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Must Do
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Port_Redirecting_and_Tunneling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Port Redirecting and Tunneling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Ports_and_services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ports and services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Recon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Vulnerability_Scanning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vulnerability Scanning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Web_Application_Attacks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assessment Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Windows_Commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Windows_Priv_Esc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Priv Esc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python_notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#passive-information-gathering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passive Information Gathering
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Passive Information Gathering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#whois-enumeration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        whois enumeration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#google-hacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Google Hacking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#netcraft" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Netcraft
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-source-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open Source Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shodan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shodan
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#active-information-gathering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Active Information Gathering
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Active Information Gathering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dns-enumeration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS Enumeration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DNS Enumeration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcpudp-port-scanning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TCP/UDP Port Scanning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port-scanning-with-nmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Port scanning with NMAP
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Port scanning with NMAP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#living-off-the-land" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Living off the land
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smb-enumeration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SMB Enumeration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SMB Enumeration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#from-windows-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From Windows Client
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smtp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SMTP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#snmp-enumeration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SNMP Enumeration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+  <h1>Information Gathering</h1>
+
+<h2 id="passive-information-gathering">Passive Information Gathering</h2>
+<p>Also Known as OSINT
+passive = gathering info through normal interaction</p>
+<h3 id="whois-enumeration">whois enumeration</h3>
+<p>whois - a tcp service, tool, and database that can provide more info about a domain name
+a lot of info may not be useful, but some can be
+nameserver ip can be found --&gt; DNS servers</p>
+<pre><code class="language-bash">whois megacorpone.com -h 192.168.241.258
+</code></pre>
+<p>-h specifies the whois server
+some useful output is names of employees and nameservers</p>
+<h3 id="google-hacking">Google Hacking</h3>
+<p>Google can be used to uncover critical info, vulnerabilities and misconfigured websites
+Done by using clever search strings and operators
+Process is iterative. Start broad and narrow search as we go
+<strong>Site operator</strong> limits search to one domain
+Example "site:megacorpone.com"
+<strong>Filetype</strong> operator specifies a specific filetype we want to search for
+Example "site:megacorpone.com filetype:txt"
+Using this we may be able to uncover useful pages like robots.txt which can lead to further resources to check. Additionally we can try specifying php, xml, or py to try and figure out the underlying programming language(s) used
+"-" can be used to exclude an operator
+Example "site:megacorpone.com -filetype:html"
+This will return all results that are not html files
+We can use intitle to locate pages that contain certain titles
+Example "intitle:"index of" "parent directory"
+This finds pages with index of in the title and parent directory on the page content
+Google hacking database on exploit db website contains mroe advanced hacking strings to show what is possible</p>
+<h3 id="netcraft">Netcraft</h3>
+<p>Netcraft gathers information on websites: (<strong>https://searchdns.netcraft.com</strong>)
+We can search "site contains" *.megacorpone.com to fins subdomains
+can also find site technologies info</p>
+<h3 id="open-source-code">Open Source Code</h3>
+<p>Sites like github, gitlab and Source Forge may contain code that can give us more information
+Many of these sites support operators like google
+if we navigate to megacorpone's repo and search filename:users we find a web app file that has a username and salted password</p>
+<h3 id="shodan">Shodan</h3>
+<p>Search engine that crawls devices connected to the internet
+need free account, but gives port and service info
+will also reveal if there are any published vulns running on sleeted host</p>
+<h2 id="active-information-gathering">Active Information Gathering</h2>
+<h3 id="dns-enumeration">DNS Enumeration</h3>
+<p>DNS is a distributed database responsible for translating domain name into ip addresses
+Common DNS record types:
+- NS: name server records that contain name of authoritive servers hosting DNS records for domain
+- A: contains ipv4 address of host
+- AAAA: contains ipv6 address of host
+- MX: Mail exchange records contain name of servers responsible for handling mail to the domain
+- PTR: Pointer records are used in reverse lookup zones and can finds records associated with an IP address
+- CNAME: Canonical Name Records are used to create aliases for other host records
+- TXT: text records contain arbitrary data and can be used for any purpose</p>
+<p>host commnad can help enumerate dns info</p>
+<pre><code class="language-shell">host www.megacorpone.com
+</code></pre>
+<p>by default will search for A record
+use -t  to specify record type</p>
+<pre><code class="language-shell">host -t mx megacorpone.com
+</code></pre>
+<p>if we search for a server and it is not found we get the following error:</p>
+<pre><code class="language-shell">host idontexist.megacorpone.com
+</code></pre>
+<p>Host idontexist.megacorpone.com not found: 3(NXDOMAIN) --&gt; we can use this knowledge to automate our effort
+we can develop a brute forcing technique for dns look ups
+- build a list of possible host names ex: list.txt</p>
+<pre><code class="language-shell">for ip in $(cat list.txt); do host $ip.megacorpone.com; done
+</code></pre>
+<p>much more complex lists are found in Seclists which can be installed running</p>
+<pre><code class="language-shell">sudo apt install seclists
+</code></pre>
+<p>If we have identified IP addresses in the same range we can also use reverse lookups to identify servers running within that range</p>
+<pre><code class="language-shell">for ip in $(seq 200 254); do host 51.222.169.$ip; done | grep -v &quot;not found&quot;
+</code></pre>
+<p>grep -v will filter out results that contain the string "not found"</p>
+<h4 id="tools">Tools</h4>
+<p>There are a few tools in Kali linux that will do dns enumeration
+dnsrecon is an advanced tool for this enumeration</p>
+<pre><code class="language-shell">dnsrecon -d megacorpone.com -t std
+</code></pre>
+<p>-d: specify domain name
+-t: specify type of enum performed
+    std: standard scan
+    brt: brute force
+-D: supplies list for Brute force</p>
+<p>dnsenum is another popular tool --&gt; seems more comprehensive than dns recon off the bat</p>
+<pre><code class="language-shell">dnsenum megacorpone.com
+</code></pre>
+<p>nslookup can be used on windows machines if necessary</p>
+<pre><code class="language-cmd">nslookup -type=TXT info.megacorptwo.com 192.168.50.151
+</code></pre>
+<p>queries can be automated through powershell or bash scripting if needed</p>
+<h3 id="tcpudp-port-scanning">TCP/UDP Port Scanning</h3>
+<p>dynamic process --&gt; results of one scan should feed into input of the next
+We can use netcat as a port scanner. It is usually not a port scanner, but it is on most systems os we can repurpose it as one if needed</p>
+<pre><code class="language-shell">nc -nvv -w 1 -z 192.168.50.152 3388-3390
+</code></pre>
+<p>-w: specifies timeout
+-z: specifies zero-I/O --&gt; used for scanning and sends no data
+-n: numeric IPs (no dns)
+-vv: very verbose
+-u: udp
+note udp may get reported as open if there is a firewall. this is due to the lack of an "icmp port unreachable message" if a firewall is guarding the port
+Be aware that some scanners will not scan all ports, especially udp
+Bash loop to sweep subnet for a specific port (445 in this example)</p>
+<pre><code class="language-bash">for i in $(seq 1 254); do nc -zv -w 1 172.16.50.$i 445; done
+</code></pre>
+<h3 id="port-scanning-with-nmap">Port scanning with NMAP</h3>
+<p>Basic format
+ ```shell
+ nmap <ip></p>
+<pre><code>-p: ports to scan --&gt; can be number, range or list
+-sS: syn stealth scan --&gt; default when nothing is specified and the user has raw socket privileges
+    usually faster because it needs to send less data and doesn't compete the handshake
+-sT connect scan --&gt; default when user doesn't have raw socket privileges
+    Takes longer because nmap has to wait for connection to complete
+    Might be useful to perform when scanning through certain types of proxies
+-sU UDP scan --&gt; will use the &quot;ICMP port unreachable&quot; method for most ports. Will send specific protocol packets for common ports. If firewalls drop packets no &quot;ICMP unreachable&quot; packet will be passed back and ports might falsely be reported as open
+-sn Host discovery --&gt; will use more than just icmp to get data. will also send tcp syn packets to port 80 and 443 to verify if host is available
+-oG grepable output --&gt;
+-A: Aggressive OS and service enumeration
+-sV: plain service scan --&gt; subset of A
+--top-ports=20 --&gt; can specify how many of the top ports we want to scan using scripts
+-O: OS fingerprinting --&gt; attempts to guess the targets OS
+    --osscan-guess: option will force nmap to guess on OS type for O scan
+
+To deal with large networks we can do simple network sweeps and then more detailed scans on discovered hosts
+#### Scripts
+--script-help can be used to gain more info about a script
+```shell
+nmap --script-help http-headers
+</code></pre>
+<p>if internet isn't available much of that info can be found in the .nse file
+general syntax for scripts</p>
+<pre><code class="language-shell">nmap --script=http-enum 192.168.225.0/24
+</code></pre>
+<p>scripts:
+    --http-enum : enumerates common directories for http
+    --http-feed: checks http feeds --&gt; idk what feeds are
+    --http-title: returns title of http sites
+    --smb-os-discovery:</p>
+<h4 id="living-off-the-land">Living off the land</h4>
+<p>Other options if nmap is not available</p>
+<pre><code class="language-Powershell">Test-NetConnection -Port 445 192.168.50.151
+</code></pre>
+<p>We can further script this whole process with the PowerShell one liner</p>
+<pre><code class="language-Powershell">1..1024 | % {echo ((New-Object Net.Sockets.TcpClient).Connect(&quot;192.168.50.151&quot;, $_)) &quot;TCP port $_ is open&quot;} 2&gt;$null
+</code></pre>
+<h3 id="smb-enumeration">SMB Enumeration</h3>
+<p>NetBios listens on port 139 TCP and several UDP ports. SMB listens on port 445 TCP. These are two separate protocols
+NetBIOS: independent session layer protocol and service that allows computer on a local network to communicate with each other
+Modern implementation of SMB can work without NetBIOS, but need Netbios to be backwards compatible so they usually go hand in hand
+we can still use nmap for these</p>
+<pre><code class="language-shell">nmap -v -p 139,445 -o smb.txt 192.168.225.1-254
+</code></pre>
+<p>Remember there are many nse scripts for smb
+There are also more specialized tools</p>
+<pre><code class="language-shell">sudo nbtscan -r 192.168.50.0/24
+</code></pre>
+<p>nbtscan - queries information about the NetBIOS configuration
+-r: specifies UDP port 137
+nmap also has useful smb scripts</p>
+<h4 id="from-windows-client">From Windows Client</h4>
+<p>net view: will list the domains, resources, and computers belonging to a given host</p>
+<pre><code class="language-cmd">net view \\dc01 /all
+</code></pre>
+<h3 id="smtp">SMTP</h3>
+<p>we can enumerate smtp to find existing usernames/emails in an system</p>
+<pre><code class="language-shell">nc -nv 192.168.50.8 25
+</code></pre>
+<p>Above command will connect to the SMTP server.
+We can then use the following commands:
+- VRFY - can use to verify the servers
+    - 252 confirms user exists
+    - 550 error given for unknown user
+Following script will check 1 username</p>
+<pre><code class="language-python">#!/usr/bin/python
+
+import socket
+import sys
+
+if len(sys.argv) != 3:
+        print(&quot;Usage: vrfy.py &lt;username&gt; &lt;target_ip&gt;&quot;)
+        sys.exit(0)
+
+# Create a Socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Connect to the Server
+ip = sys.argv[2]
+connect = s.connect((ip,25))
+
+# Receive the banner
+banner = s.recv(1024)
+
+print(banner)
+
+# VRFY a user
+user = (sys.argv[1]).encode()
+s.send(b'VRFY ' + user + b'\r\n')
+result = s.recv(1024)
+
+print(result)
+
+# Close the socket
+s.close()
+</code></pre>
+<p>For Windows we can can use the Test-NetConnection cmdlet</p>
+<pre><code class="language-powershell">Test-NetConnection -Port 25 192.168.50.8
+</code></pre>
+<p>Using the above command we cannot query info like we did previously.
+However, we can overcome this if the telnet client is installed</p>
+<pre><code class="language-cmd">telnet 192.168.50.8 25
+</code></pre>
+<h3 id="snmp-enumeration">SNMP Enumeration</h3>
+<p>MIB trees contain information related to network management. The database is organized like a tree.
+We can use the tool <strong>onesixtyone</strong> to bruteforce community strings for snmp</p>
+<pre><code class="language-shell">onesixtyone -c community -i ips
+</code></pre>
+<p>where community is a list of community strings to try and ips is a list of IPs
+we can use <strong>snmpwalk</strong> to gather info from snmp tables granted we know the read only community string
+we can enumerate the OID MIB to get users on a windows machine</p>
+<pre><code class="language-shell">snmpwalk -c public -v1 192.168.50.151 1.3.6.1.4.1.77.1.2.25
+</code></pre>
+<p>Other useful MIBs for Microsoft:
+    1.3.6.1.2.1.25.1.6.0 System Processes
+    1.3.6.1.2.1.25.4.2.1.2 Running Programs
+    1.3.6.1.2.1.25.4.2.1.4 Processes Path
+    1.3.6.1.2.1.25.2.3.1.4 Storage Units
+    1.3.6.1.2.1.25.6.3.1.2 Software Name
+    1.3.6.1.4.1.77.1.2.25 User Accounts
+    1.3.6.1.2.1.6.13.1.3 TCP Local Ports
+        One advantage of this is it will reveal ports that are only listening locally, so network scanning will not have discovered them</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

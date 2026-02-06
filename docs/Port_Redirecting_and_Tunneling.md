@@ -1,6 +1,6 @@
 # Port Redirecting and Tunneling
 Port redirecting and tunneling may be needed due to network segmenting and firewalls
-# Port forwarding in Linux
+## Port forwarding in Linux
 When port forwarding, we configure a host to listen on one port and relay all packets received on that port to another destination
 Suppose we gain control of a server with two network NICs. Port forwarding will be needed to talk to machines not on our subnet
 We can use `ip addr` and `ip route` to gain more info on the network topology
@@ -25,10 +25,10 @@ Now we can enumerate the postgress database. If any other services are identifie
 Other tools we can use are rinetd or Netcat combiend with a FIFO named pipe
 Erik also mentioned chisel as a tool
 
-# SSH Tunnelling
+## SSH Tunnelling
 Tunnelling is the act of encapsulating data of one kind of data stream within another as it travels across the network
 SSH is useful for this --> we can pass almost any kind of data through ssh
-## SSH Local Port Forwarding
+### SSH Local Port Forwarding
 In the previous example there was one host that listed and forwarded the traffic.
 With SSH Local port forwarding, packets are not forwarded by the same host that listens for packets
 Instead an ssh connection is made between the two hosts (client and server) and the client opens up
@@ -52,7 +52,7 @@ ssh -N -L sshclient:listeningport:final_destination:target_port sshserveruser@ss
 ==Once we execute the ssh commna d with -N no shell will be opened and no fruther commands can be entered ont hat shell --> this is normal. We need to keep the process running and communicate through the listening port now==
 a second shell on our ssh client will need to be opened to check the validity of the tunnel
 
-## SSH dynamic port forwarding
+### SSH dynamic port forwarding
 
 Local port forwarding has one limitation, there can only be one target destination
 We can Dynamic port forwarding, supported by openssh to overcome this limitation.
@@ -80,7 +80,7 @@ We can now specify proxychains before our desired command to use the dynamic for
 proxychains smbclient -L //172.16.50.217/ -U hr_admin --password=Welcome1234
 ```
 
-## SSH Remote Port Forwarding
+### SSH Remote Port Forwarding
 All of the example so far involve us binding to a listening port inside of a network --> this is much more likely to get stopped by a firewall
 Instead, we can use remote port forwarding to get a machine inside the network to call out to us --> this is like a reverse shell, but we are binding to a listening port
 **One difference with this is that the listening port is now on the ssh server instead of the ssh client**
@@ -118,7 +118,7 @@ Where our server will usually be the kali linux box
 In the case of this example, we list the proxy as `socks5 127.0.0.1 9998`
 Now we are set to run commands with Proxychains and reach beyond the initial foothold
 
-## Using SSHuttle
+### Using SSHuttle
 If wwe have direct access to an ssh server and root on the client, we may be able to run sshuttle. This is also requires python on the ssh server
 We set up a listening port on our foothold using socat
 ```bash
@@ -131,13 +131,13 @@ sshuttle -r database_admin@192.168.50.63:2222 10.4.50.0/24 172.16.50.0/24
 We won't get much output, but if done correctly we can now access components on the internal network shown above
 Note, database admin is the user we are connecting to the ssh server (Postgress server in example), not the foothold which was the ssh client
 
-# Port forwarding with Windows tools
-## ssh.exe
+## Port forwarding with Windows tools
+### ssh.exe
 oppen ssh has been bundled with windows since April 2018. If it is present will will find: scp.exe, sftp.exe. ssh.exe along with other ssh-\* utilities in %systemdrive%\\Windows\\System32\\OpenSSH
 
 We can use ssh just like linux to create port forwards to any machine
 
-## Plink.exe
+### Plink.exe
 Admins may not want to leave ssh on machines. We may be able to use PuTTY or it's command line only counterpart, plink.
 **Plink has many features of Openssh, but it cannot do remote dynamic forwarding**
 ![[Pasted image 20230914060411.png]]
@@ -169,7 +169,7 @@ We have now set up a tunnel for the multiserver to forward rdp traffic to itself
 ```bash
 xfreerdp /u:rdp_admin /p:P@ssw0rd! /v:127.0.0.1:9833
 ```
-## Netsh
+### Netsh
 There is a native firewall tool, netsh, we can use to set up a port forward
 Note, this requires administrative privilege and we need to take UAC into account --> we will need an RDP shell to do
 Open a cmd prompt as admin
@@ -197,10 +197,10 @@ and
 netsh interface portproxy del v4tov4 listenport=2222 listenaddress=192.168.50.64
 ```
 
-# HTTP Tunneling
+## HTTP Tunneling
 There may be a scenario where network traffic is heavily restricted, and we cannot call a reverse shell or port forward using ssh. --> We can try http tunneling
 If we have access to a webserver this is indicative of http traffic being allowed
-## Http Tunneling with Chisel
+### Http Tunneling with Chisel
 Chisel is an http tunneling tool. It also uses ssh within http so our data can be encrypted
 Chisel uses a server client model. A chisel server must be setup that can accept clients
 Many port forwarding options are available
@@ -237,7 +237,7 @@ ssh -o ProxyCommand='ncat --proxy-type socks5 --proxy 127.0.0.1:1080 %h %p' data
 %h specifies target host (database_admin@\<ip\>, which will be filled in by the ssh command
 %p specifies target port which will be filled in by the ssh command
 
-## DNS Tunnelling
+### DNS Tunnelling
 Because systems need to make DNS queries for hosts they don't know the path to, we can exfiltrate data by making queries to noextistant domains if we control a local authoritave DNS server of that domain
 Example
 ```bash

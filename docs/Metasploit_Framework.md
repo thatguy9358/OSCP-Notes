@@ -1,5 +1,5 @@
 # Metasploit Framework
-# Getting familiar with metasploit
+## Getting familiar with metasploit
 Metasploit doesn't enable database by default
 ```bash
 sudo msfdb init
@@ -14,7 +14,7 @@ starts metasploit and gives database status
 
 The database can be useful for tracking results during a pentest. There are tools like db_nmap that execute a common tool and directly import results to the database. We can then query these results using the services (and other) command(s)
 
-# Axillary Modules
+## Auxillary Modules
 Provide functionalities such as protocol enumeration, port scanning, fuzzing, sniffing, and more. Auxiliary modules are useful for many tasks, including information gathering (under the gather/ hierarchy), scanning and enumeration of various services (under the scanner/ hierarchy), and so on.
 We can search aux modules specifically using commands like
 ```bash
@@ -26,13 +26,13 @@ services -p 445 --rhosts
 ```
 after running scanners we can see if metasploit automatically detected vulnerabilities by running
 `vulns`
-# Exploit Modules
+## Exploit Modules
 once we run an exploit, if we receive an interactive session we can background it with crtl+z, and switch between other active sessions
 Use `sessions -l` to list all active sessions
 Use `sessions -i <target>` to switch sessions
 Use -k flag to kill sessions
 
-# Metasploit payloads
+## Metasploit payloads
 Non staged payload is sent in its entirety along with the exploit --> these "all in one" payloads are generally more stable
 Staged payloads usually have two parts, a small primary payload that connects back to the attacking machine and larger transfer once connection is made. Then the shell code is executed --> could be advantageous if there is size concern or anti virus active since anti virus can detect shell code
 
@@ -43,12 +43,12 @@ Channels are all contained within one session
 we can look at fIle system commands to view commands related to upload/download of files
 Meterpreter has an https shell option which can be good for IDS evasion
 
-# msfvenom
+## msfvenom
 we can use -l to list available options for various settings
 only metasploit multi handler can handle staged payloads
 
 
-# Post Exploitation
+## Post Exploitation
 Meterpreter has a lot of post exploit functions. More on windows than linux though
 On windows we can try to become the system user by using the `getsystem` command --> we need to check if the SeImperosnate and SeDebug privileges are set. We can use `whoami /priv` for that
 `migrate` can be used to takeover running proccesses --> this is useful because if  a user kills the process we have compromised, we will lose connection. We can switch to system level or more mundane processes to decrease chance of that happening
@@ -61,7 +61,7 @@ execute -H -f notepad
  metasploit also has modules that can help elevate privilege --> if we search UAC we get plenty of results for bypassing UAC on windows
  "bypassuac_sdclt" is an effective one
  `load kiwi` will load mimikatz into a meterpreter session
-# Pivoting
+## Pivoting
 `route add` can be used to add routes through meterpreter
 ```bash
 route add <ip range> <session id>
@@ -79,5 +79,5 @@ the above command sets up a port forward on localhost 3389 to a remote rdp port.
 sudo xfreerdp /v:127.0.0.1 /u:luiza
 ```
 
-# Resource Scripts
+## Resource Scripts
 Resource scripts can chain together a series of metasploit console commands and ruby code

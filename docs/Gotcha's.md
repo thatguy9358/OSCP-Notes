@@ -1,4 +1,4 @@
-k==If searchsploit exploits aren't working search online for other ones== --> search all exploits to begin with and pick the best sounding one
+==If searchsploit exploits aren't working search online for other ones== --> search all exploits to begin with and pick the best sounding one
 
 For webshell to interactive shell make sure we try all possible avenues --> ==common ones may not work, but others might, so keep trying==
 

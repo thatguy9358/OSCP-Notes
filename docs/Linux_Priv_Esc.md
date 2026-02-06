@@ -17,8 +17,8 @@ As this file runs as the root users privileges, we can manipulate our path gain 
 
 We copied the /bin/sh shell, called it curl, gave it the correct permissions and then put its location in our path. This meant that when the /usr/bin/menu binary was run, its using our path variable to find the "curl" binary.. Which is actually a version of /usr/sh, as well as this file being run as root it runs our shell as root!
 
-# Tib3rius Priv esc notes+
-## File Permissions and Basic Enumeration
+## Tib3rius Priv esc notes+
+### File Permissions and Basic Enumeration
 user accounts configured in /etc/passwd
 user password hashes are stored in the /etc/shadow file
 groups are configured in /etc/group
@@ -58,7 +58,7 @@ netstat -anp
 Firewall rules may be able to be read under /etc/iptables if the file permission is weak
 
 We can use `mount` to see mounted and unmounted file partitions --> we may need to investigate multiple partitions for priv esc details
-## Spawning shells
+### Spawning shells
 spawning root shell
 	one way to spawn root shell is to create a copy of the /bin/bash executable. Make sure it is owned by the root user and has the suid bit set. Then run the new executable with the -p option
 	Custom executables
@@ -93,11 +93,11 @@ LinEnum: advanced bash script which extracts useful info and can copy interestin
 	 -e to set an export location
 	-k to search for keyword
 
-## Applications
+### Applications
 We should enumerate all installed applications and note versions. We may be able to find publicly available exploits
 dpkg or rpm should list all applications
 
-## Kernel exploits
+### Kernel exploits
 `cat /etc/issue` --> shows OS
 `uname -a` --> shows kernel version
 `arch` shows architecture type
@@ -111,7 +111,7 @@ searchsploit "linux kernel Ubuntu 16 Local Privilege Escalation"   | grep  "4." 
 ```
 Make sure we compile the exploit for the proper environment --> we can check the exploit itself for any compile instructions
 
-## Service Exploits
+### Service Exploits
 Services are programs that run in the background, accpeting input or performing regular tasks
 If vulnerable services are running as root, exploiting them can lead to command execution as root
 Service exploits can be found with OSINT
@@ -130,7 +130,7 @@ We can see if we have privilege to run tcpdump and grep for passwords as well. T
 ```bash
 sudo tcpdump -i lo -A | grep "pass"
 ```
-## weak file permisions
+### weak file permisions
 /etc/shadow contains user password hashes. if we can read contents we can crack hashes. If we can write the file we can write hashes we know
 	crack the hash using john
 ```bash
@@ -158,26 +158,26 @@ We can also search for all directories writable by the current user to see if an
 find / -writable -type d 2>/dev/null
 ```
 
-## Automated Enumeration
+### Automated Enumeration
 unix-privesc-check --> installed by default on kali under /usr/bin/unix-privesc-check
 linPEAS :)
 LinEnum
 
 
-## sudo
+### sudo
 sudo lets other users programs as root or other users
 controlled by the etc/sudoers file
-### Escape sequences
+#### Escape sequences
 sudo -l lists the programs a user can run with sudo
 if we are restricted to running certain programs as sudo we might be able to use a shell escape sequence to spawn a root shell
 https://gtfobins.github.io/ lists binaries that can be exploited to create shells
 check all commands a user can run a sudo against this resource ^^^
 AppArmor may stop some of these attempts --> unsure how to check for this if not root, but it is run on Debian based systems starting with debian 10
-### Abusing intended functionality
+#### Abusing intended functionality
 If a program doesn't have an escape sequence it may still be possible to escalate privileges
 if we can read files owned by root, we may be able to extract sensitive data. If we write to files owned by root we can insert or modify info
 apache 2 will print out an error with any line from a file it does not understand. --> this allows us to read the 1st line of root owned files
-### environment variables
+#### environment variables
 if env_keeper is set to LD_PRELOAD we can create a shared object that executes code automatically through an init() function
 it will be loaded into memory and executed before anything else
 ```c
@@ -201,7 +201,7 @@ now if we run a valid sudo command we will get a root shell. Example if find was
 sudo LD_PRELOAD=/tmp/preload.so find
 ```
 
-### LD_LIBRARY_PATH
+#### LD_LIBRARY_PATH
 LD_LIBRARY_PATH variable contains a set of directories where shared libraries are searched for first
 ldd command can e used to print the shared libraries used by a program. EX:
 ```bash
@@ -226,7 +226,7 @@ To compile, note we are hijacking libcrypt.so.1
 ```bash
 gcc -o /tmp/libcrypt.so.1 -shared -fPIC /home/user/tools/sudo/library_path.c
 ```
-## Cron Jobs
+### Cron Jobs
 Cron jobs are programs are scripts that run at certain times or intervals
 jobs run at the level of the user who owns them
 ususaly located in
@@ -239,16 +239,16 @@ ususaly located in
 **We can use the command `sudo crontab -l` to list cronjobs run by the root user**
 Misconfiguration of file permisions can lead to easy priv esc if we can write to scripts or programs used by cronjob
 If any scripts are world writeable simply add in a command for a reverse shell or copy an suid version of /bin/sh
-### Path environment
+#### Path environment
 Path can be overwritten in Crontab file
 if crontab program or script does not use the absolute path, and one of the PATH directories is writeable we may be able to create program/script with the same name as the cron job
-### wildcards
+#### wildcards
 if there are any wild cards we can see create files to pass command line options
 reference gtfobins to see if commands have command line options that can lead to escape sequences
 
-### Binary versions
+#### Binary versions
 check versions of binaries used. Even if we cannot overwrite the binary, it may be a vulnerable version
-## SUID/SGID Executables
+### SUID/SGID Executables
 ```bash
 find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {}\; 2>/dev/null
 find  / -perm -4000 2>/dev/null
@@ -266,7 +266,7 @@ We can also look for capabilities using the following command
 ```
 capabilities are similar to having the SUID bit set
 **If we have an suid binary that can edit files, we can edit root files like /etc/passwd**
-## shared object injection
+### shared object injection
 use strace to see if any suid programs are using shared objects
 ```bash
 strace <binary> 2>&1 | grep -iE "open|access|no such file"
@@ -277,7 +277,7 @@ creating malicious shared object
 - identify directory program is looking in for the object, confirm it's writeable
 - create a file to write the program
 	- example payload
-	```bash
+```bash
 	#include <stdio.h>
 	#include <stdlib.h>
 
@@ -291,7 +291,7 @@ creating malicious shared object
 	gcc -shared -fPIC -o libcalc.so libcalc.c
 ```
 - run suid program that calls the shared object
-### Path Environment variable
+#### Path Environment variable
 Since a user has control ovet heir own path variable we can tell the shell to look in directories we can write to first
 If an suid binary calls another script/command that does not have an absolute path we can create a malicious one and put it under the first directory in the path variable
 run strings on executable file to find strings of characters
@@ -314,7 +314,7 @@ In the same command prepend current directory to path and execute suid file
 PATH=.:$PATH /path/to/file
 ```
 ### Bash Shell Vulnerabilities
-
-## Finding Sensitive info
+Check the version of bash we are running. there may be known exploits
+### Finding Sensitive info
 Sometimes credentials may be stored in environment variables --> use `env` to inspect
-if w efind any credentials we can try using them with `su - root`
+if we find any credentials we can try using them with `su - root`

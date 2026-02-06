@@ -1,4 +1,4 @@
-site_name: My site
+site_name: Charlie's OSCP Notes
 site_url: https://thatguy9358.github.io/OSCP-Notes
 theme:
   name: material
@@ -7,9 +7,18 @@ theme:
     primary: light green
   features:
     - header.autohide
+    - navigation.tracking
+    - content.code.copy
+    - content.code.select
   logo: assets/logo2.png
+  favicon: assets/logo2.png
 use_directory_urls: false
 markdown_extensions:
   - attr_list
+  - pymdownx.mark
 plugins:
   - mkdocs-pdf
+extra:
+  Social:
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/charles-sampson/

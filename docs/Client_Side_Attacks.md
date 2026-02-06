@@ -1,5 +1,5 @@
 # Client Side Attacks
-# Target Recon
+## Target Recon
 We can check meta data tags of publicly available documents for the organization --> can include info on author, date, and software
 We can leverage google dorking techniques tosearch for specific file types
 site:example.com filetype:pdf
@@ -8,7 +8,7 @@ once we get a document downloaded we can use "exfiltool" to gain more info
 	-a displays duplicated tag
 	-u displays unknown tags
 In the example we see a microsoft system was used and we get the authors name
-# Exploiting Microsoft office
+## Exploiting Microsoft office
 ## Macros
 When creating malicious documents with macros we need to save as .doc not .docx. .doc will allow us to embed the macro instead of being forced to use a template. .docm is fine as well
 view-->macro-->create
@@ -214,7 +214,7 @@ we copy automatic_configguration.lnk and config.Library-ms to our WebDAV directo
 start webserver, listener and WsgiDAV fir the WebDAV share
 
 
-# ODT files
+## ODT files
 ### NTLMv2 Theft through ODT File
 
 From the information retrieved after uploading a file, we know that our uploaded ODT files is reviewed by a staff.  This can be exploited by uploading an ODT file [embedded with malicious code](https://secureyourit.co.uk/wp/2018/05/01/creating-malicious-odt-files/) to steal the NTLMv2 hash of the user reviewing the file.

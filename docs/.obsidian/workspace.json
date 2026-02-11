@@ -69,12 +69,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "index.md",
+                "file": "Linux_Priv_Esc.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "index"
+              "title": "Linux_Priv_Esc"
             }
           }
         ],
@@ -247,6 +247,7 @@
   },
   "active": "91b7ca3b4148dea5",
   "lastOpenFiles": [
+    "index.md",
     "Port_Redirecting_and_Tunneling.md",
     "Playbook.md",
     "Note_taking_and_Report_writing.md",
@@ -256,7 +257,6 @@
     "Linux_Priv_Esc.md",
     "Linux_commands.md",
     "Information_Gathering.md",
-    "index.md",
     "Gotcha's.md",
     "Client_Side_Attacks.md",
     "Active_Directory.md",

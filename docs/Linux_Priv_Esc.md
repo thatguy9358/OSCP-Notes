@@ -260,11 +260,20 @@ SGID allows user to execute with rights of group
 See if any of the files with suid bit have shell escape sequences on gtfobins
 LD_PRELOAD and LD_LIBRARY_PATH get ignored for SUID files
 use OSINT to look up security vulnerabilities for any unusual suid binaries
+### Capabilities
 We can also look for capabilities using the following command
 ```
 /usr/sbin/getcap -r / 2>/dev/null
 ```
 capabilities are similar to having the SUID bit set
+these are the default settings. I there's anything else listed check gtfobins to see if we can escalalte privilege
+```
+/usr/bin/ping = cap_net_raw+ep
+/usr/bin/traceroute6.iputils = cap_net_raw+ep
+/usr/bin/mtr-packet = cap_net_raw+ep
+/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper = cap_net_bind_service,cap_net_admin+ep
+```
+CAP_SETUID allows a program to set UID of itself without the normal checks
 **If we have an suid binary that can edit files, we can edit root files like /etc/passwd**
 ### shared object injection
 use strace to see if any suid programs are using shared objects

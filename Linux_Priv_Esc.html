@@ -597,6 +597,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capabilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#shared-object-injection" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1302,6 +1313,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capabilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#shared-object-injection" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1581,11 +1603,19 @@ SUID allows a user to execute with rights of owner
 SGID allows user to execute with rights of group
 See if any of the files with suid bit have shell escape sequences on gtfobins
 LD_PRELOAD and LD_LIBRARY_PATH get ignored for SUID files
-use OSINT to look up security vulnerabilities for any unusual suid binaries
-We can also look for capabilities using the following command</p>
+use OSINT to look up security vulnerabilities for any unusual suid binaries</p>
+<h3 id="capabilities">Capabilities</h3>
+<p>We can also look for capabilities using the following command</p>
 <pre><code>/usr/sbin/getcap -r / 2&gt;/dev/null
 </code></pre>
 <p>capabilities are similar to having the SUID bit set
+these are the default settings. I there's anything else listed check gtfobins to see if we can escalalte privilege</p>
+<pre><code>/usr/bin/ping = cap_net_raw+ep
+/usr/bin/traceroute6.iputils = cap_net_raw+ep
+/usr/bin/mtr-packet = cap_net_raw+ep
+/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper = cap_net_bind_service,cap_net_admin+ep
+</code></pre>
+<p>CAP_SETUID allows a program to set UID of itself without the normal checks
 <strong>If we have an suid binary that can edit files, we can edit root files like /etc/passwd</strong></p>
 <h3 id="shared-object-injection">shared object injection</h3>
 <p>use strace to see if any suid programs are using shared objects</p>
